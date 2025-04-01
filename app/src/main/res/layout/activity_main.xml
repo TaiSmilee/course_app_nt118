@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <!-- Toolbar (App Bar) -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
@@ -16,30 +14,32 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:menu="@menu/top_bar_menu">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tv_hello"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
+            android:text="Hello, Rosie!"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_hello"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hello, Rosie!"
-                android:textSize="20sp"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="What do you want to learn today?"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="What do you want to learn today?"
-                android:textSize="12sp"
-                android:textColor="@android:color/white"
-                android:layout_marginTop="4dp" />
-        </LinearLayout>
+    <!-- Toolbar (App Bar) -->
 
     </androidx.appcompat.widget.Toolbar>
 
