@@ -20,7 +20,7 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:scaleType="centerInside"
-            android:tint="@color/black" />
+            app:tint="@color/black" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/top_bar"
