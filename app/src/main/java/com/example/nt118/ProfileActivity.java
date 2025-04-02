@@ -1,6 +1,5 @@
 package com.example.nt118;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -11,7 +10,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.student_profile); // Đảm bảo XML của bạn được load đúng
+        setContentView(R.layout.activity_student_profile); // Đảm bảo XML của bạn được load đúng
 
         // Ánh xạ các nút
         ImageView btnBack = findViewById(R.id.btnBack);
