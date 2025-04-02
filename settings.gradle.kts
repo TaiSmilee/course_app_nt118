@@ -19,6 +19,10 @@ dependencyResolutionManagement {
     }
 }
 
+<<<<<<< HEAD
 rootProject.name = "nt118"
+=======
+rootProject.name = "E-Learning App"
+>>>>>>> feature-branch
 include(":app")
  

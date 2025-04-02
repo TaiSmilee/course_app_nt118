@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Nt118" parent="Theme.Material3.DayNight.NoActionBar">
@@ -6,4 +7,10 @@
     </style>
 
     <style name="Theme.Nt118" parent="Base.Theme.Nt118" />
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AppCompat.Light.NoActionBar" />
+>>>>>>> feature-branch
 </resources>
