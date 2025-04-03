@@ -1,6 +1,10 @@
 [versions]
-<<<<<<< HEAD
+login_page
+HEAD
 agp = "8.8.1"
+
+agp = "8.6.0"
+main
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -20,7 +24,7 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-=======
+
 agp = "8.8.0"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
@@ -51,5 +55,5 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
->>>>>>> feature-branch
+feature-branch
 

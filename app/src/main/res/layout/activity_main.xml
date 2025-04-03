@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Toolbar (App Bar) -->
+    <!-- Thanh trên -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
@@ -40,7 +40,6 @@
                 android:textColor="@android:color/white"
                 android:layout_marginTop="4dp" />
         </LinearLayout>
-
     </androidx.appcompat.widget.Toolbar>
 
     <!-- Nội dung chính của ứng dụng -->
@@ -48,7 +47,15 @@
         android:id="@+id/frame_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btnOpenProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open Profile"
+            android:layout_centerInParent="true" />
+    </FrameLayout>
 
     <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -58,4 +65,5 @@
         android:background="?android:attr/windowBackground"
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="labeled"/>
+
 </LinearLayout>

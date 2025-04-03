@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-<<<<<<< HEAD
+HEAD
 }
 
 android {
@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.nt118"
-=======
+
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
@@ -20,7 +20,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.e_learningapp"
->>>>>>> feature-branch
+feature-branch
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -42,20 +42,26 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-<<<<<<< HEAD
-=======
+HEAD
+
     kotlinOptions {
         jvmTarget = "11"
     }
     buildFeatures {
         compose = true
     }
->>>>>>> feature-branch
+feature-branch
 }
 
 dependencies {
 
-<<<<<<< HEAD
+login_page
+HEAD
+
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.cardview:cardview:1.0.0")
+main
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -63,7 +69,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-=======
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -81,5 +87,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
->>>>>>> feature-branch
+feature-branch
 }
