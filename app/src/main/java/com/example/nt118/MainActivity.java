@@ -2,13 +2,15 @@ package com.example.nt118;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.Button;
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,11 +26,32 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Tìm Button và thêm sự kiện click
+        // Tìm Button và thêm sự kiện click mở ProfileActivity
         Button btnOpenProfile = findViewById(R.id.btnOpenProfile);
         btnOpenProfile.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-            startActivity(intent); // Mở ProfileActivity
+            startActivity(intent);
+        });
+
+        // Xử lý sự kiện BottomNavigationView
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                if (item.getItemId() == R.id.nav_home) {
+                    try {
+                        Intent intent = new Intent(MainActivity.this,HomeCourseActivity.class);
+                        startActivity(intent);
+                        return true;
+                    } catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        return false;
+                    }
+                }
+                return false;
+            }
         });
     }
 }

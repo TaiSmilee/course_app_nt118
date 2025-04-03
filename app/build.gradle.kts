@@ -5,7 +5,9 @@ plugins {
 android {
     namespace = "com.example.nt118"
     compileSdk = 35
-
+    buildFeatures {
+        viewBinding = true  // Sửa lại dòng này
+    }
     defaultConfig {
         applicationId = "com.example.nt118"
         minSdk = 24
