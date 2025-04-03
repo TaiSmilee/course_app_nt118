@@ -1,0 +1,135 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:background="#F5F5F5"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CourseDetailActivity">
+
+    <include layout="@layout/top_bar"/>
+
+    <FrameLayout
+        android:id="@+id/frame_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+
+                <TextView
+                    android:id="@+id/courseTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Introduction to UX Design"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#000"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnStudentList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Student List"
+                    android:textSize="10sp"
+                    app:cornerRadius="5dp"
+                    app:backgroundTint="#9c9c9c"
+                    android:textColor="#FFF"/>
+            </LinearLayout>
+
+            <!-- TabLayout -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="#6200EE"
+                app:tabTextColor="#666"
+                app:tabSelectedTextColor="#000">
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tab_lessons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LESSONS" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tab_notifications"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NOTIFICATIONS" />
+            </com.google.android.material.tabs.TabLayout>
+
+            <!-- Nội dung của tab LESSONS -->
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/lessonsContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Video khóa học -->
+                    <VideoView
+                        android:id="@+id/courseVideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp" />
+
+                    <SeekBar
+                        android:id="@+id/videoSeekBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        android:layout_marginBottom="10dp"/>
+
+                    <!-- Tiêu đề khóa học + Nút Student List -->
+
+                    <!-- Danh sách bài học -->
+                    <ExpandableListView
+                        android:id="@+id/lessonList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@android:color/darker_gray"
+                        android:dividerHeight="0.5dp"
+                        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+                        android:groupIndicator="@null"/>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <!-- Nội dung của tab NOTIFICATIONS -->
+            <LinearLayout
+                android:id="@+id/notificationsContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone"> <!-- Mặc định ẩn -->
+
+                <ListView
+                    android:id="@+id/notificationList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@android:color/darker_gray"
+                    android:dividerHeight="0.5dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <include layout="@layout/bottom_bar"/>
+</LinearLayout>
