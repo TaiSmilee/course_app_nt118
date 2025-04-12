@@ -27,6 +27,9 @@ public class CourseListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_list);
 
+        TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+        toolbarTitle.setText("Course List");
+
         recyclerView = findViewById(R.id.recyclerViewCourses);
         //tvCourseCount = findViewById(R.id.tvCourseCount);
 
@@ -40,7 +43,7 @@ public class CourseListActivity extends AppCompatActivity {
         courseList.add(new Course("Lớp Python", "", "", "", "", "", ""));
 
         // Cập nhật số lượng
-        tvCourseCount.setText("Tổng số khóa học: " + courseList.size());
+        //tvCourseCount.setText("Tổng số khóa học: " + courseList.size());
 
         courseAdapter = new CourseAdapter(this, courseList);
         recyclerView.setAdapter(courseAdapter);

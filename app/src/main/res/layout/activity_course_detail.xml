@@ -88,26 +88,24 @@
                     <VideoView
                         android:id="@+id/courseVideo"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp" />
+                        android:layout_height="200dp"
+                        android:layout_gravity="center_horizontal"/>
 
                     <SeekBar
                         android:id="@+id/videoSeekBar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:max="100"
                         android:layout_marginBottom="10dp"/>
 
                     <!-- Tiêu đề khóa học + Nút Student List -->
 
                     <!-- Danh sách bài học -->
-                    <ExpandableListView
+                    <ListView
                         android:id="@+id/lessonList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:divider="@android:color/darker_gray"
-                        android:dividerHeight="0.5dp"
-                        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-                        android:groupIndicator="@null"/>
+                        android:dividerHeight="0.5dp"/>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
