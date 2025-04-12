@@ -33,7 +33,7 @@
             android:name=".StudentListActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeCourse"
+            android:name=".MainActivity"
             android:exported="false">
 
         </activity>
