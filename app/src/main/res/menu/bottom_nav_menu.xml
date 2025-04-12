@@ -6,14 +6,14 @@
         android:title="Home"/>
 
     <item
-        android:id="@+id/nav_search"
-        android:icon="@drawable/search_24px"
-        android:title="Search"/>
+        android:id="@+id/nav_deadline"
+        android:icon="@drawable/alarm_24px"
+        android:title="Deadline"/>
 
     <item
-        android:id="@+id/nav_courses"
-        android:icon="@drawable/menu_book_24px"
-        android:title="My Courses"/>
+        android:id="@+id/nav_examDate"
+        android:icon="@drawable/edit_document_24px"
+        android:title="Exam"/>
 
     <item
         android:id="@+id/nav_profile"

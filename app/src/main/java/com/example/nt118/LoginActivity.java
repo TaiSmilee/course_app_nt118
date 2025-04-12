@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         // Giả lập xử lý đăng nhập (có thể thay bằng API thực tế)
         if (email.equals("test@example.com") && password.equals("123456")) {
             Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, HomeCourse.class);
             startActivity(intent);
             // Chuyển sang Activity chính (nếu có)
         } else {

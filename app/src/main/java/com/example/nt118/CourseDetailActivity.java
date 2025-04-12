@@ -24,10 +24,11 @@ import java.util.TimerTask;
 import android.widget.SeekBar;
 import android.os.Handler;
 import android.content.Intent;
+import android.os.Looper;
 
 
 public class CourseDetailActivity extends AppCompatActivity {
-    private ExpandableListView lessonList;
+    private ListView lessonList;
     private ListView notificationList;
     private VideoView courseVideo;
     private TabLayout tabLayout;
@@ -35,8 +36,10 @@ public class CourseDetailActivity extends AppCompatActivity {
     private TextView courseTitle;
     private SeekBar videoSeekBar;
     private Timer timer;
-    private Handler handler = new Handler();
+    private Handler handler;
     private Runnable updateSeekBar;
+    private boolean wasPlayingBeforeSeek = false;
+    private boolean userIsSeeking = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             return insets;
         });
 
+        handler = new Handler(Looper.getMainLooper());
         TextView toolbarTitle = findViewById(R.id.toolbarTitle);
         toolbarTitle.setText("Course Detail");
 
@@ -61,6 +65,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         btnStudentList = findViewById(R.id.btnStudentList);
         lessonList = findViewById(R.id.lessonList);
         notificationList = findViewById(R.id.notificationList);
+        videoSeekBar = findViewById(R.id.videoSeekBar);
         tabLayout = findViewById(R.id.tabLayout);
 
         // Dummy video
@@ -73,41 +78,51 @@ public class CourseDetailActivity extends AppCompatActivity {
             updateSeekBar = new Runnable() {
                 @Override
                 public void run() {
-                    if (courseVideo.isPlaying()) {
-                        videoSeekBar.setProgress(courseVideo.getCurrentPosition());
-                        handler.postDelayed(this, 500);
-                    }
+                    videoSeekBar.setProgress(courseVideo.getCurrentPosition());
+                    handler.postDelayed(this, 500);
                 }
             };
-
+            courseVideo.start();
             handler.post(updateSeekBar);
         });
 
         // Xử lý khi người dùng kéo SeekBar để tua video
         videoSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Lưu lại trạng thái trước khi người dùng kéo SeekBar
+                wasPlayingBeforeSeek = courseVideo.isPlaying();
+                courseVideo.pause(); // Dừng video tạm thời để tua mượt hơn
+            }
+
+            @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    courseVideo.seekTo(progress); // Tua video đến vị trí mong muốn
+                    courseVideo.seekTo(progress); // Tua đến vị trí mong muốn
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Nếu trước đó đang phát thì phát tiếp sau khi tua
+                if (wasPlayingBeforeSeek) {
+                    courseVideo.start();
+                }
+            }
         });
 
         // Phát hoặc dừng video khi nhấn vào
         courseVideo.setOnClickListener(v -> {
+            if (userIsSeeking) return; // Đừng xử lý khi vừa tua xong
+
             if (courseVideo.isPlaying()) {
                 courseVideo.pause();
             } else {
-                courseVideo.start();
+                if (courseVideo.getCurrentPosition() < courseVideo.getDuration()) {
+                    courseVideo.start();
+                }
             }
         });
-
 
         // Xử lý khi nhấn nút Student List
         btnStudentList.setOnClickListener(v -> {
@@ -142,13 +157,14 @@ public class CourseDetailActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 0) { // Tab LESSONS
-                    lessonList.setVisibility(View.VISIBLE);
-                    notificationList.setVisibility(View.GONE);
-                } else { // Tab NOTIFICATIONS
-                    lessonList.setVisibility(View.GONE);
-                    notificationList.setVisibility(View.VISIBLE);
+                if (tab.getPosition() == 0) { // LESSONS
+                    lessonsContent.setVisibility(View.VISIBLE);
+                    notificationsContent.setVisibility(View.GONE);
+                } else { // NOTIFICATIONS
+                    lessonsContent.setVisibility(View.GONE);
+                    notificationsContent.setVisibility(View.VISIBLE);
                 }
+
             }
 
             @Override
@@ -158,4 +174,13 @@ public class CourseDetailActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {}
         });
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (courseVideo != null && courseVideo.isPlaying()) {
+            courseVideo.pause();
+        }
+    }
+
 }

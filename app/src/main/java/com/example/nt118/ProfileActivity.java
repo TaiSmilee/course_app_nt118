@@ -4,6 +4,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.content.Intent;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -12,16 +15,14 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_profile); // Đảm bảo XML của bạn được load đúng
 
-        // Ánh xạ các nút
-        ImageView btnBack = findViewById(R.id.btnBack);
-        ImageView btnEdit = findViewById(R.id.btnEdit);
-        Button btnPersonalDetail = findViewById(R.id.btnPersonalDetail);
-        Button btnFriendsList = findViewById(R.id.btnFriendsList);
+        LinearLayout layoutClasses = findViewById(R.id.layoutCourses);
 
-        // Gán sự kiện click
-        btnBack.setOnClickListener(view -> Toast.makeText(this, "Back clicked", Toast.LENGTH_SHORT).show());
-        btnEdit.setOnClickListener(view -> Toast.makeText(this, "Edit clicked", Toast.LENGTH_SHORT).show());
-        btnPersonalDetail.setOnClickListener(view -> Toast.makeText(this, "Personal Detail clicked", Toast.LENGTH_SHORT).show());
-        btnFriendsList.setOnClickListener(view -> Toast.makeText(this, "Friends List clicked", Toast.LENGTH_SHORT).show());
+        layoutClasses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, CourseListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
