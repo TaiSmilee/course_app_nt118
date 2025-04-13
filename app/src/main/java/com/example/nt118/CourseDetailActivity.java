@@ -26,7 +26,6 @@ import android.os.Handler;
 import android.content.Intent;
 import android.os.Looper;
 
-
 public class CourseDetailActivity extends AppCompatActivity {
     private ListView lessonList;
     private ListView notificationList;
