@@ -1,31 +1,21 @@
 package com.example.nt118;
 
 public class ClassModel {
-    private String classCode;
-    private String className;
-    private String classTime;
-    private String teacherName;
+    private String startTime;
+    private String endTime;
+    private String subjectName;
+    private String room;
 
-    public ClassModel(String classCode, String className, String classTime, String teacherName) {
-        this.classCode = classCode;
-        this.className = className;
-        this.classTime = classTime;
-        this.teacherName = teacherName;
+    public ClassModel(String startTime, String endTime, String subjectName, String room) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.subjectName = subjectName;
+        this.room = room;
     }
 
-    public String getClassCode() {
-        return classCode;
-    }
+    public String getStartTime() { return startTime; }
+    public String getEndTime() { return endTime; }
+    public String getSubjectName() { return subjectName; }
+    public String getRoom() { return room; }
 
-    public String getClassName() {
-        return className;
-    }
-
-    public String getClassTime() {
-        return classTime;
-    }
-
-    public String getTeacherName() {
-        return teacherName;
-    }
 }

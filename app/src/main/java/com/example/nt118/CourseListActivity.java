@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nt118.CourseAdapter;
 import com.example.nt118.Course;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,24 @@ public class CourseListActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_list);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_profile) {
+                Intent intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_home) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
+            }
+            return false;
+        });
 
         TextView toolbarTitle = findViewById(R.id.toolbarTitle);
         toolbarTitle.setText("Course List");

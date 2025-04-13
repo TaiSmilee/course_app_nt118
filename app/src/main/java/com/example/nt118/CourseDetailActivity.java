@@ -25,6 +25,7 @@ import android.widget.SeekBar;
 import android.os.Handler;
 import android.content.Intent;
 import android.os.Looper;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class CourseDetailActivity extends AppCompatActivity {
@@ -67,6 +68,24 @@ public class CourseDetailActivity extends AppCompatActivity {
         notificationList = findViewById(R.id.notificationList);
         videoSeekBar = findViewById(R.id.videoSeekBar);
         tabLayout = findViewById(R.id.tabLayout);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_profile) {
+                Intent intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_home) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
+            }
+            return false;
+        });
+
 
         // Dummy video
         String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.sample_video;
