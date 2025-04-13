@@ -31,25 +31,30 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
+        // Ánh xạ các thành phần giao diện
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        // tvForgotPassword = findViewById(R.id.tvForgotPassword);
+        //tvForgotPassword = findViewById(R.id.tvForgotPassword);
 
+        // Xử lý sự kiện khi nhấn nút đăng nhập
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
 
+            // Kiểm tra dữ liệu nhập vào
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(LoginActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            // Kiểm tra định dạng email
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 Toast.makeText(LoginActivity.this, "Email không hợp lệ", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            // Gọi hàm xử lý đăng nhập
             performLogin(email, password);
         });
     }

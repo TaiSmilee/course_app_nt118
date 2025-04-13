@@ -40,6 +40,7 @@
         <activity android:name=".ProfileActivity"
             android:exported="false">
 
+
         </activity>
         <activity android:name=".Deadline.DeadlineActivity" />
         <activity android:name=".Semester.StudentResultActivity" />
