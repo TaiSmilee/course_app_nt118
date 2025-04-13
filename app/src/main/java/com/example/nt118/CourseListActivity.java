@@ -2,15 +2,18 @@ package com.example.nt118;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nt118.CourseAdapter;
 import com.example.nt118.Course;
+import com.example.nt118.Deadline.DeadlineActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -41,12 +44,34 @@ public class CourseListActivity extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 return true;
+            } else if (itemId == R.id.nav_deadline) {
+                Intent intent = new Intent(this, DeadlineActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
             }
             return false;
         });
 
+        Toolbar toolbar = findViewById(R.id.top_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+// Lắng nghe khi nhấn vào icon back
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Mở activity khác tại đây (ví dụ mở MainActivity)
+                Intent intent = new Intent(CourseListActivity.this, MainActivity.class); // thay MainActivity bằng activity bạn muốn mở
+                startActivity(intent);
+
+                // Nếu muốn đóng activity hiện tại
+                finish();
+            }
+        });
+
         TextView toolbarTitle = findViewById(R.id.toolbarTitle);
-        toolbarTitle.setText("Course List");
+        toolbarTitle.setText("DS Lớp Học");
 
         recyclerView = findViewById(R.id.recyclerViewCourses);
         //tvCourseCount = findViewById(R.id.tvCourseCount);

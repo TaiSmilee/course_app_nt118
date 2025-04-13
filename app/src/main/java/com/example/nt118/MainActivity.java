@@ -42,8 +42,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 return true;
-            }
-            else if (itemId == R.id.nav_deadline) {
+            } else if (itemId == R.id.nav_home) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_deadline) {
                 Intent intent = new Intent(this, DeadlineActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -115,18 +119,18 @@ public class MainActivity extends AppCompatActivity {
         // Based on the day index, load different classes
         // This is just example data - in a real app, you would load from database or API
         if (dayIndex == 1) { // Monday (07)
-            classList.add(new ClassModel("1:00", "4:00", "Introduction to Programming (Lecture)", "C201"));
+            classList.add(new ClassModel("1:00", "4:00", "Nhập Môn Lập Trình (Lý Thuyết)", "C201"));
         } else if (dayIndex == 2) { // Tuesday (08)
-            classList.add(new ClassModel("7:30", "10:45", "Introduction to UX Design (Lecture)", "C313"));
+            classList.add(new ClassModel("7:30", "10:45", "Nhập Môn Thiết Kế UX (Lý Thuyết)", "C313"));
         } else if (dayIndex == 3) { // Wednesday (09)
 
         } else if (dayIndex == 4) { // Thursday (08)
-            classList.add(new ClassModel("7:30", "9:45", "Database (Lecture)", "B304"));
-            classList.add(new ClassModel("1:00", "4:00", "Database (Practice)", "B204"));
+            classList.add(new ClassModel("7:30", "9:45", "Cơ Sở Dữ Liệu (Lý Thuyết)", "B304"));
+            classList.add(new ClassModel("1:00", "4:00", "Cơ Sở Dữ Liệu (Thực Hành)", "B204"));
         } else if (dayIndex == 0) { // Sunday (06)
             // No classes on Sunday
         } else if (dayIndex == 5) { // Friday (09)
-            classList.add(new ClassModel("7:30", "10:45", "Statistical Probability", "C313"));
+            classList.add(new ClassModel("7:30", "10:45", "Xác Suất Thống Kê", "C313"));
         } else { // Other days
 
         }

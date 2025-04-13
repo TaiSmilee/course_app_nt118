@@ -5,9 +5,11 @@ import android.widget.LinearLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.content.Intent;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.nt118.Deadline.DeadlineActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,8 +25,18 @@ public class ProfileActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.nav_home) {
+            if (itemId == R.id.nav_profile) {
+                Intent intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_home) {
                 Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_deadline) {
+                Intent intent = new Intent(this, DeadlineActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 return true;

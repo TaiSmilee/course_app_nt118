@@ -7,6 +7,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.widget.TextView;
+
+import com.example.nt118.Deadline.DeadlineActivity;
 import com.google.android.material.tabs.TabLayout;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
@@ -26,6 +28,7 @@ import android.os.Handler;
 import android.content.Intent;
 import android.os.Looper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.appcompat.widget.Toolbar;
 
 
 public class CourseDetailActivity extends AppCompatActivity {
@@ -55,7 +58,7 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         handler = new Handler(Looper.getMainLooper());
         TextView toolbarTitle = findViewById(R.id.toolbarTitle);
-        toolbarTitle.setText("Course Detail");
+        toolbarTitle.setText("Chi Tiết Lớp Học");
 
         // Ánh xạ view
         TabLayout tabLayout = findViewById(R.id.tabLayout);
@@ -82,9 +85,32 @@ public class CourseDetailActivity extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 return true;
+            } else if (itemId == R.id.nav_deadline) {
+                Intent intent = new Intent(this, DeadlineActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
             }
             return false;
         });
+
+        Toolbar toolbar = findViewById(R.id.top_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+// Lắng nghe khi nhấn vào icon back
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Mở activity khác tại đây (ví dụ mở MainActivity)
+                Intent intent = new Intent(CourseDetailActivity.this, CourseListActivity.class); // thay MainActivity bằng activity bạn muốn mở
+                startActivity(intent);
+
+                // Nếu muốn đóng activity hiện tại
+                finish();
+            }
+        });
+
 
 
         // Dummy video
@@ -151,18 +177,18 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         // Dữ liệu giả danh sách bài học
         ArrayList<String> lessons = new ArrayList<>();
-        lessons.add("01 - Introduction (01:23 mins)");
-        lessons.add("02 - Understanding UX (02:45 mins)");
-        lessons.add("03 - UX Research Methods (03:30 mins)");
+        lessons.add("01 - Giới Thiệu (01:23 phút)");
+        lessons.add("02 - Hiểu UX (02:45 phút)");
+        lessons.add("03 - Phương Pháp Học (03:30 phút)");
 
         ArrayAdapter<String> lessonAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, lessons);
         lessonList.setAdapter(lessonAdapter);
 
         // Dữ liệu giả danh sách thông báo
         ArrayList<String> notifications = new ArrayList<>();
-        notifications.add("📢 New Assignment Available");
-        notifications.add("📢 Live Q&A Session Tomorrow");
-        notifications.add("📢 Course Update: New Content Added");
+        notifications.add("📢 Bài Tập Mới");
+        notifications.add("📢 Buổi Ôn Tập Ngày Mai");
+        notifications.add("📢 Nội Dung Mới Đã Thêm");
 
         ArrayAdapter<String> notificationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notifications);
         notificationList.setAdapter(notificationAdapter);

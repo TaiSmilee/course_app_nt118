@@ -5,15 +5,21 @@ import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import java.util.List;
 import java.util.ArrayList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nt118.Deadline.DeadlineActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class StudentListActivity extends AppCompatActivity {
@@ -29,6 +35,9 @@ public class StudentListActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_student_list);
 
+        TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+        toolbarTitle.setText("DS Sinh Viên");
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -43,8 +52,30 @@ public class StudentListActivity extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 return true;
+            } else if (itemId == R.id.nav_deadline) {
+                Intent intent = new Intent(this, DeadlineActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
             }
             return false;
+        });
+
+        Toolbar toolbar = findViewById(R.id.top_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+// Lắng nghe khi nhấn vào icon back
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Mở activity khác tại đây (ví dụ mở MainActivity)
+                Intent intent = new Intent(StudentListActivity.this, CourseDetailActivity.class); // thay MainActivity bằng activity bạn muốn mở
+                startActivity(intent);
+
+                // Nếu muốn đóng activity hiện tại
+                finish();
+            }
         });
 
         recyclerView = findViewById(R.id.recyclerView);

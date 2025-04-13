@@ -24,22 +24,28 @@ public class DeadlineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deadline);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.nav_home) {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                return true;
-            } else if (itemId == R.id.nav_profile) {
+            if (itemId == R.id.nav_profile) {
                 Intent intent = new Intent(this, ProfileActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 return true;
+            } else if (itemId == R.id.nav_home) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_deadline) {
+                Intent intent = new Intent(this, DeadlineActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
             }
-            // Không xử lý gì nếu đang ở deadline
-            return true;
+            return false;
         });
+
         recyclerView = findViewById(R.id.recycler_deadlines);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

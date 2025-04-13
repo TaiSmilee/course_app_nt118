@@ -33,7 +33,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Introduction to UX Design"
+                    android:text="Nhập môn thiết kế UX"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="#000"/>
@@ -42,7 +42,7 @@
                     android:id="@+id/btnStudentList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Student List"
+                    android:text="DS Sinh Viên"
                     android:textSize="10sp"
                     app:cornerRadius="5dp"
                     app:backgroundTint="#9c9c9c"
@@ -62,13 +62,13 @@
                     android:id="@+id/tab_lessons"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="LESSONS" />
+                    android:text="Bài Giảng" />
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/tab_notifications"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="NOTIFICATIONS" />
+                    android:text="Thông Báo" />
             </com.google.android.material.tabs.TabLayout>
 
             <!-- Nội dung của tab LESSONS -->

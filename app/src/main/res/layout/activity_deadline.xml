@@ -1,59 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!-- Header -->
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/headerLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#2196F3"
-        android:padding="12dp">
+        android:layout_height="wrap_content"
+        android:background="#0099FF"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DEADLINEs"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
-
-    <!-- Content scrollable -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:id="@+id/deadlineContainer"
-            android:orientation="vertical"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"/>
-    </ScrollView>
+            android:layout_marginTop="10dp">
 
-    <!-- Bottom Navigation -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:background="#F7F7F7"
-        android:weightSum="5">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Deadline"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
 
-        <TextView style="@style/MenuItem" android:text="TKB" />
-        <TextView style="@style/MenuItem" android:text="Lịch Thi" />
-        <TextView style="@style/MenuItem" android:text="Điểm" />
-        <TextView style="@style/MenuItem" android:text="Học phí" />
-        <TextView style="@style/MenuItem" android:text="Deadline"
-            android:textColor="#2196F3"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/notifications_24px"
+                app:tint="@android:color/white"/>
+        </RelativeLayout>
     </LinearLayout>
-    <include layout="@layout/bottom_bar"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_deadlines"
+
+    <LinearLayout
+        android:id="@+id/deadlineContainer"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:padding="16dp"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_deadlines"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </ScrollView>
+    </LinearLayout>
+
+    <include layout="@layout/bottom_bar"/>
 </LinearLayout>
