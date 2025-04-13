@@ -1,5 +1,6 @@
 package com.example.nt118;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -55,8 +56,38 @@ public class HomeCourseActivity extends AppCompatActivity implements ClassAdapte
 
         // Initial load of day 7 classes
         updateClassInfo(selectedDayIndex);
-    }
 
+        setupBottomBarNavigation();
+    }
+    private void setupBottomBarNavigation() {
+        // Thiết lập các sự kiện click cho bottom bar
+        View bottomBar = findViewById(R.id.bottomBar);
+
+
+        bottomBar.findViewById(R.id.btnDeadline).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeCourseActivity.this, DeadlineActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        bottomBar.findViewById(R.id.btnExam).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent intent = new Intent(HomeCourseActivity.this, HomeActivity.class);
+                //startActivity(intent);
+            }
+        });
+
+        bottomBar.findViewById(R.id.btnProfile).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeCourseActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
     private void selectDay(int index) {
         // Reset previous selected day
         dayViews[selectedDayIndex].setBackgroundResource(0);
