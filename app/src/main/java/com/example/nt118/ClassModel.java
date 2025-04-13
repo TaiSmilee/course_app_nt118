@@ -18,4 +18,5 @@ public class ClassModel {
     public String getSubjectName() { return subjectName; }
     public String getRoom() { return room; }
 
+
 }

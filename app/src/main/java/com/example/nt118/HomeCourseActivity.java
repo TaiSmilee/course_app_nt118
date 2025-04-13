@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nt118.Deadline.DeadlineActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,7 +143,7 @@ public class HomeCourseActivity extends AppCompatActivity implements ClassAdapte
     public void onClassItemClick(ClassModel classModel) {
         // Handle click on class item - show detailed information
         // For now, just show a toast
-        Toast.makeText(this, "Chi tiết: " + classModel.getClassName(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Chi tiết: " + classModel.getClassName(), Toast.LENGTH_SHORT).show();
 
         // Here you would normally open a detailed view or dialog
         // showClassDetails(classModel);
