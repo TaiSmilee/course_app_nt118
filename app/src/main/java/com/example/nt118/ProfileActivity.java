@@ -41,5 +41,14 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        LinearLayout layoutResult = findViewById(R.id.layoutResult);
+
+        layoutResult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, com.example.nt118.Semester.StudentResultActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

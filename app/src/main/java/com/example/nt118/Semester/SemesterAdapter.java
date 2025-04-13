@@ -1,4 +1,4 @@
-package com.example.nt118;
+package com.example.nt118.Semester;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,8 +8,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.nt118.R;
+
 import java.util.List;
 
 public class SemesterAdapter extends RecyclerView.Adapter<SemesterAdapter.SemesterViewHolder> {
@@ -34,31 +36,43 @@ public class SemesterAdapter extends RecyclerView.Adapter<SemesterAdapter.Semest
         Semester semester = semesterList.get(position);
         holder.semesterTitle.setText(semester.getSemesterTitle());
 
-        holder.tableLayout.removeViews(1, holder.tableLayout.getChildCount() - 1); // Clear old rows
+        // Xóa các dòng cũ (trừ header)
+        holder.tableLayout.removeViews(1, holder.tableLayout.getChildCount() - 1);
 
         for (SubjectResult subject : semester.getSubjectResults()) {
             TableRow row = new TableRow(context);
 
-            TextView name = new TextView(context);
-            name.setText(subject.getSubjectName());
+            TextView tvCode = createCell(subject.getSubjectCode());
+            TextView tvClass = createCell(subject.getClassCode());
+            TextView tvCredits = createCell(String.valueOf(subject.getCredits()));
+            TextView tvMidterm = createCell(String.valueOf(subject.getMidterm()));
+            TextView tvPractice = createCell(String.valueOf(subject.getPractice()));
+            TextView tvExam = createCell(String.valueOf(subject.getExam()));
+            TextView tvFinal = createCell(String.valueOf(subject.getFinalExam()));
+            TextView tvAverage = createCell(String.valueOf(subject.getAverage()));
 
-            TextView credits = new TextView(context);
-            credits.setText(String.valueOf(subject.getCredits()));
-
-            TextView mid = new TextView(context);
-            mid.setText(String.valueOf(subject.getMidScore()));
-
-            TextView fin = new TextView(context);
-            fin.setText(String.valueOf(subject.getFinalScore()));
-
-            row.addView(name);
-            row.addView(credits);
-            row.addView(mid);
-            row.addView(fin);
+            row.addView(tvCode);
+            row.addView(tvClass);
+            row.addView(tvCredits);
+            row.addView(tvMidterm);
+            row.addView(tvPractice);
+            row.addView(tvExam);
+            row.addView(tvFinal);
+            row.addView(tvAverage);
 
             holder.tableLayout.addView(row);
         }
     }
+
+    // Hàm tạo TextView cho từng ô
+    private TextView createCell(String text) {
+        TextView tv = new TextView(context);
+        tv.setText(text);
+        tv.setPadding(8, 8, 8, 8);
+        tv.setTextSize(14);
+        return tv;
+    }
+
 
     @Override
     public int getItemCount() {

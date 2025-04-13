@@ -51,7 +51,7 @@
         <TextView style="@style/MenuItem" android:text="Deadline"
             android:textColor="#2196F3"/>
     </LinearLayout>
-
+    <include layout="@layout/bottom_bar"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_deadlines"
         android:layout_width="match_parent"

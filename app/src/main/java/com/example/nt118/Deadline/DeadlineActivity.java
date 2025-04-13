@@ -1,12 +1,17 @@
-package com.example.nt118;
+package com.example.nt118.Deadline;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
-import com.example.nt118.DeadlineItem;
+
+import com.example.nt118.MainActivity;
+import com.example.nt118.ProfileActivity;
+import com.example.nt118.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DeadlineActivity extends AppCompatActivity {
 
@@ -18,7 +23,23 @@ public class DeadlineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deadline);
-
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                Intent intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
+            }
+            // Không xử lý gì nếu đang ở deadline
+            return true;
+        });
         recyclerView = findViewById(R.id.recycler_deadlines);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

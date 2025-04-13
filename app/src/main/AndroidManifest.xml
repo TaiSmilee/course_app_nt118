@@ -18,7 +18,7 @@
 
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".CourseDetailActivity"
@@ -29,7 +29,7 @@
             android:name=".StudentListActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +41,9 @@
             android:exported="false">
 
         </activity>
-        <activity android:name=".DeadlineActivity" />
+        <activity android:name=".Deadline.DeadlineActivity" />
+        <activity android:name=".Semester.StudentResultActivity" />
+
     </application>
 
 </manifest>

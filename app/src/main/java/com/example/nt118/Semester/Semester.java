@@ -1,4 +1,4 @@
-package com.example.nt118;
+package com.example.nt118.Semester;
 
 import java.util.List;
 

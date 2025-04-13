@@ -11,26 +11,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- Tiêu đề Học kỳ -->
         <TextView
             android:id="@+id/semesterTitle"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"
-            android:layout_width="wrap_content"
+            android:background="@drawable/rounded_button_blue"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginBottom="12dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <!-- Bảng điểm -->
         <TableLayout
             android:id="@+id/tableLayoutSubjects"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="*">
+            android:stretchColumns="*"
+            android:background="@android:color/white"
+            android:padding="4dp">
 
             <TableRow>
-                <TextView android:text="Subject" android:textStyle="bold"/>
-                <TextView android:text="Credits" android:textStyle="bold"/>
-                <TextView android:text="Mid" android:textStyle="bold"/>
-                <TextView android:text="Final" android:textStyle="bold"/>
+                <TextView android:text="MAMH" android:textStyle="bold"/>
+                <TextView android:text="LỚP" android:textStyle="bold"/>
+                <TextView android:text="TC" android:textStyle="bold"/>
+                <TextView android:text="QT" android:textStyle="bold"/>
+                <TextView android:text="TH" android:textStyle="bold"/>
+                <TextView android:text="GK" android:textStyle="bold"/>
+                <TextView android:text="CK" android:textStyle="bold"/>
+                <TextView android:text="TB" android:textStyle="bold"/>
             </TableRow>
+
         </TableLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
