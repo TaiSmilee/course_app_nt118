@@ -65,11 +65,11 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
 
             // Lưu trạng thái đăng nhập
-            getSharedPreferences("APP_PREF", MODE_PRIVATE)
-                    .edit()
-                    .putBoolean("IS_LOGGED_IN", true)
-                    .apply();
 
+            SharedPreferences prefs = getSharedPreferences("APP_PREF", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.clear(); // xoá hết, hoặc editor.remove("IS_LOGGED_IN");
+            editor.apply();
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish(); // đóng LoginActivity
         } else {

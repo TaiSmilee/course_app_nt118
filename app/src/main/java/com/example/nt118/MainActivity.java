@@ -14,12 +14,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nt118.Deadline.DeadlineActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_profile) {
                 Intent intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return true;
+            }
+            else if (itemId == R.id.nav_deadline) {
+                Intent intent = new Intent(this, DeadlineActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 return true;

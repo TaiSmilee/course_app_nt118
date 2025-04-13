@@ -45,8 +45,7 @@
 
         <activity android:name=".Deadline.DeadlineActivity" />
         <activity android:name=".Semester.StudentResultActivity" />
-        <activity
-            android:name=".HomeCourseActivity" />
+
     </application>
 
 </manifest>
