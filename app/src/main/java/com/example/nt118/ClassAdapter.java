@@ -9,19 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import android.content.Context;
+import android.content.Intent;
 
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHolder> {
-
     private List<ClassModel> classList;
-    private ClassItemClickListener listener;
+    private Context context;
 
-    public interface ClassItemClickListener {
-        void onClassItemClick(ClassModel classModel);
-    }
-
-    public ClassAdapter(List<ClassModel> classList, ClassItemClickListener listener) {
-        this.classList = classList;
-        this.listener = listener;
+    public ClassAdapter(List<ClassModel> scheduleList, Context context) {
+        this.classList = scheduleList;
+        this.context = context;
     }
 
     @NonNull
@@ -33,19 +30,22 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ClassViewHolder holder, int position) {
-        ClassModel classModel = classList.get(position);
-        holder.tvClassCode.setText(classModel.getClassCode());
-        holder.tvClassName.setText(classModel.getClassName());
-        holder.tvClassTime.setText(classModel.getClassTime());
-        holder.tvTeacherName.setText(classModel.getTeacherName());
+        ClassModel item = classList.get(position);
+        holder.startTime.setText(item.getStartTime());
+        holder.endTime.setText(item.getEndTime());
+        holder.subjectName.setText(item.getSubjectName());
+        holder.room.setText("Room: " + item.getRoom());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onClassItemClick(classModel);
-                }
-            }
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CourseDetailActivity.class);
+
+            // 👉 Gửi dữ liệu qua Intent (ví dụ: tên môn học)
+            intent.putExtra("subjectName", item.getSubjectName());
+            intent.putExtra("startTime", item.getStartTime());
+            intent.putExtra("endTime", item.getEndTime());
+            intent.putExtra("room", item.getRoom());
+
+            context.startActivity(intent);
         });
     }
 
@@ -54,15 +54,15 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         return classList.size();
     }
 
-    public static class ClassViewHolder extends RecyclerView.ViewHolder {
-        TextView tvClassCode, tvClassName, tvClassTime, tvTeacherName;
+    static class ClassViewHolder extends RecyclerView.ViewHolder {
+        TextView startTime, endTime, subjectName, room;
 
         public ClassViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvClassCode = itemView.findViewById(R.id.tvClassCode);
-            tvClassName = itemView.findViewById(R.id.tvClassName);
-            tvClassTime = itemView.findViewById(R.id.tvClassTime);
-            tvTeacherName = itemView.findViewById(R.id.tvTeacherName);
+            startTime = itemView.findViewById(R.id.startTimeTextView);
+            endTime = itemView.findViewById(R.id.endTimeTextView);
+            subjectName = itemView.findViewById(R.id.subjectNameTextView);
+            room = itemView.findViewById(R.id.roomTextView);
         }
     }
 }
