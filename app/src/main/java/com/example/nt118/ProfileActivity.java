@@ -50,5 +50,14 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        LinearLayout layoutAttendance = findViewById(R.id.layoutAttendance);
+
+        layoutAttendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, com.example.nt118.Attendance.AttendanceActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
