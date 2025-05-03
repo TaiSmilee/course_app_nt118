@@ -9,6 +9,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- Custom colors for app -->
+    <color name="primary_blue">#0099FF</color>
+    <color name="button_text_color">#333333</color>
     <color name="purple_primary">#5E4AE3</color>
     <color name="dark_blue">#1A1E25</color>
     <color name="gray">#7D7D7D</color>

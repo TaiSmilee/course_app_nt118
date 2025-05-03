@@ -54,15 +54,19 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         return classList.size();
     }
 
+    public interface ClassItemClickListener {
+        void onClassItemClick(ClassModel classModel);
+    }
+
     static class ClassViewHolder extends RecyclerView.ViewHolder {
         TextView startTime, endTime, subjectName, room;
 
         public ClassViewHolder(@NonNull View itemView) {
             super(itemView);
-            startTime = itemView.findViewById(R.id.startTimeTextView);
-            endTime = itemView.findViewById(R.id.endTimeTextView);
-            subjectName = itemView.findViewById(R.id.subjectNameTextView);
-            room = itemView.findViewById(R.id.roomTextView);
+            startTime = itemView.findViewById(R.id.tvClassTime);
+            endTime = itemView.findViewById(R.id.tvClassTime);
+            subjectName = itemView.findViewById(R.id.tvClassName);
+            room = itemView.findViewById(R.id.tvClassTime);
         }
     }
 }
