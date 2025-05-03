@@ -40,7 +40,7 @@
             android:id="@+id/txtTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PROFILE"
+            android:text="STUDENT PROFILE"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
@@ -50,7 +50,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             android:layout_marginTop="16dp"/>
 
-        <!-- Thẻ chứa thông tin sinh viên -->
+        <!-- Card thông tin sinh viên -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardProfile"
             android:layout_width="match_parent"
@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Nguyễn Hữu Tài"
+                    android:text="Nguyễn Văn A"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -94,12 +94,13 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/imgProfile" />
 
+                <!-- Lớp -->
                 <TextView
                     android:id="@+id/txtClass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="STD - 12(B)"
+                    android:text="CNTT - K17"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -113,17 +114,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="Lorem Ipsum is simply dummy text of the standard dummy"
+                    android:text="Sinh viên chuyên ngành công nghệ thông tin yêu thích lập trình và thiết kế UI/UX."
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txtClass" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Thẻ chứa thông tin liên hệ -->
+        <!-- Thẻ liên hệ -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardContact"
             android:layout_width="match_parent"
@@ -141,14 +141,13 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp">
 
-                <!-- Số điện thoại -->
                 <TextView
                     android:id="@+id/txtPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
-                    android:text="📞 +91 9999900000"
+                    android:text="📞 0123 456 789"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -159,15 +158,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="✉ anshsharma@gmail.com"
+                    android:text="✉ nguyenvana@example.com"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txtPhone" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Bao gồm layout phụ nếu cần -->
         <include
             android:id="@+id/layoutProfile"
             layout="@layout/layout_student_component"
@@ -198,5 +197,6 @@
             android:text="Friends List"
             android:textColor="@android:color/black"
             app:layout_constraintTop_toBottomOf="@id/btnPersonalDetail"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
