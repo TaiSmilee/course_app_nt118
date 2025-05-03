@@ -1,12 +1,14 @@
 package com.example.nt118;
+
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
+import android.widget.LinearLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.content.Intent;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -36,6 +38,24 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this, CourseListActivity.class);
+                startActivity(intent);
+            }
+        });
+        LinearLayout layoutResult = findViewById(R.id.layoutResult);
+
+        layoutResult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, com.example.nt118.Semester.StudentResultActivity.class);
+                startActivity(intent);
+            }
+        });
+        LinearLayout layoutAttendance = findViewById(R.id.layoutAttendance);
+
+        layoutAttendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, com.example.nt118.Attendance.AttendanceActivity.class);
                 startActivity(intent);
             }
         });

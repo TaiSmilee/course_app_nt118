@@ -21,7 +21,6 @@ public class CourseListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CourseAdapter courseAdapter;
     private List<Course> courseList;
-    private TextView tvCourseCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +52,8 @@ public class CourseListActivity extends AppCompatActivity {
         //tvCourseCount = findViewById(R.id.tvCourseCount);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Dữ liệu mẫu
         courseList = new ArrayList<>();
 
         // Thêm một số dữ liệu mẫu

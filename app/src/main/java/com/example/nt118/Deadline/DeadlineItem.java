@@ -1,4 +1,4 @@
-package com.example.nt118;
+package com.example.nt118.Deadline;
 
 public class DeadlineItem {
     public String subject;

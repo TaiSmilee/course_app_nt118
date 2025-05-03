@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Tiêu đề Học kỳ -->
+        <TextView
+            android:id="@+id/semesterTitle"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_button_blue"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginBottom="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Bảng điểm -->
+        <TableLayout
+            android:id="@+id/tableLayoutSubjects"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:background="@android:color/white"
+            android:padding="4dp">
+
+            <TableRow>
+                <TextView android:text="MAMH" android:textStyle="bold"/>
+                <TextView android:text="LỚP" android:textStyle="bold"/>
+                <TextView android:text="TC" android:textStyle="bold"/>
+                <TextView android:text="QT" android:textStyle="bold"/>
+                <TextView android:text="TH" android:textStyle="bold"/>
+                <TextView android:text="GK" android:textStyle="bold"/>
+                <TextView android:text="CK" android:textStyle="bold"/>
+                <TextView android:text="TB" android:textStyle="bold"/>
+            </TableRow>
+
+        </TableLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

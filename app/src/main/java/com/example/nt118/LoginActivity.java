@@ -1,6 +1,7 @@
 package com.example.nt118;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
@@ -18,6 +19,16 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Kiểm tra đã đăng nhập chưa
+        SharedPreferences prefs = getSharedPreferences("APP_PREF", MODE_PRIVATE);
+        boolean isLoggedIn = prefs.getBoolean("IS_LOGGED_IN", false);
+        if (isLoggedIn) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish(); // không cho quay lại LoginActivity nữa
+            return;
+        }
+
         setContentView(R.layout.activity_login);
 
         // Ánh xạ các thành phần giao diện
@@ -46,21 +57,21 @@ public class LoginActivity extends AppCompatActivity {
             // Gọi hàm xử lý đăng nhập
             performLogin(email, password);
         });
-
-        // Xử lý sự kiện khi nhấn vào "Quên mật khẩu"
-        tvForgotPassword.setOnClickListener(v ->
-                Toast.makeText(LoginActivity.this, "Chức năng quên mật khẩu chưa được triển khai", Toast.LENGTH_SHORT).show()
-        );
     }
 
-    // Hàm xử lý đăng nhập
     private void performLogin(String email, String password) {
-        // Giả lập xử lý đăng nhập (có thể thay bằng API thực tế)
+        // Login giả lập - thay bằng gọi API thật nếu có
         if (email.equals("test@example.com") && password.equals("123456")) {
             Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(LoginActivity.this, HomeCourseActivity.class);
-            startActivity(intent);
-            // Chuyển sang Activity chính (nếu có)
+
+            // Lưu trạng thái đăng nhập
+
+            SharedPreferences prefs = getSharedPreferences("APP_PREF", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.clear(); // xoá hết, hoặc editor.remove("IS_LOGGED_IN");
+            editor.apply();
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish(); // đóng LoginActivity
         } else {
             Toast.makeText(LoginActivity.this, "Đăng nhập thất bại, kiểm tra lại thông tin", Toast.LENGTH_SHORT).show();
         }
