@@ -1,4 +1,4 @@
-package com.example.nt118;
+package com.example.nt118.homecourse;
 
 public class ClassModel {
     private String startTime;

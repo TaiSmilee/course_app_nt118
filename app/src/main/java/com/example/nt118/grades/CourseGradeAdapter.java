@@ -1,4 +1,4 @@
-package com.example.nt118;
+package com.example.nt118.grades;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nt118.R;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;

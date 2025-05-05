@@ -15,22 +15,13 @@
 
         <!-- Các activity khác của bạn -->
 
-        <activity
-            android:name=".CourseListActivity"
-            android:exported="false">
-        </activity>
+        <activity android:name=".CourseListActivity" />
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+        <activity android:name=".MainActivity" />
 
-        <activity
-            android:name=".CourseDetailActivity"
-            android:exported="false" />
+        <activity android:name=".CourseDetailActivity" />
 
-        <activity
-            android:name=".StudentListActivity"
-            android:exported="false" />
+        <activity android:name=".StudentListActivity" />
 
         <activity
             android:name=".LoginActivity"
@@ -42,10 +33,9 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="false" />
-
+        <activity android:name=".homecourse.HomeCourseActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".grades.GradeActivity" />
         <activity android:name=".Deadline.DeadlineActivity" />
         <activity android:name=".Semester.StudentResultActivity" />
         <activity android:name=".Attendance.AttendanceActivity" />

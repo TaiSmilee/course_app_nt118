@@ -1,4 +1,4 @@
-package com.example.nt118;
+package com.example.nt118.homecourse;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.nt118.CourseDetailActivity;
+import com.example.nt118.R;
 
 import java.util.List;
 
@@ -63,10 +66,10 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
         public ClassViewHolder(@NonNull View itemView) {
             super(itemView);
-            startTime = itemView.findViewById(R.id.tvClassTime);
-            endTime = itemView.findViewById(R.id.tvClassTime);
-            subjectName = itemView.findViewById(R.id.tvClassName);
-            room = itemView.findViewById(R.id.tvClassTime);
+            startTime = itemView.findViewById(R.id.startTimeTextView);
+            endTime = itemView.findViewById(R.id.endTimeTextView);
+            subjectName = itemView.findViewById(R.id.subjectNameTextView);
+            room = itemView.findViewById(R.id.roomTextView);
         }
     }
 }

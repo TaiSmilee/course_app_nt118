@@ -1,4 +1,4 @@
-package com.example.nt118;
+package com.example.nt118.grades;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,13 +9,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nt118.Deadline.DeadlineActivity;
+import com.example.nt118.ProfileActivity;
+import com.example.nt118.R;
+import com.example.nt118.homecourse.ClassAdapter;
+import com.example.nt118.homecourse.HomeCourseActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GradeActivity extends AppCompatActivity {
+public abstract class GradeActivity extends AppCompatActivity  implements ClassAdapter.ClassItemClickListener {
 
     private TextView tvGPA;
     private TextView tvCredits;
@@ -153,21 +158,26 @@ public class GradeActivity extends AppCompatActivity {
             bottomBar.findViewById(R.id.btnDeadline).setOnClickListener(v -> {
                 Intent intent = new Intent(GradeActivity.this, DeadlineActivity.class);
                 startActivity(intent);
+                finish();
             });
 
-            bottomBar.findViewById(R.id.btnExam).setOnClickListener(v -> {
-                Intent intent = new Intent(GradeActivity.this, GradeActivity.class);
-                startActivity(intent);
+            bottomBar.findViewById(R.id.btnGrade).setOnClickListener(v -> {
+                if (!(GradeActivity.this instanceof GradeActivity)) {
+                    Intent intent = new Intent(GradeActivity.this, GradeActivity.class);
+                    startActivity(intent);
+                }
             });
 
             bottomBar.findViewById(R.id.btnProfile).setOnClickListener(v -> {
                 Intent intent = new Intent(GradeActivity.this, ProfileActivity.class);
                 startActivity(intent);
+                finish();
             });
 
             bottomBar.findViewById(R.id.btnHome).setOnClickListener(v -> {
                 Intent intent = new Intent(GradeActivity.this, HomeCourseActivity.class);
                 startActivity(intent);
+                finish();
             });
         }
     }

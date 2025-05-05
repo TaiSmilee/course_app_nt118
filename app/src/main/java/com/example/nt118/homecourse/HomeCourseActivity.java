@@ -1,4 +1,4 @@
-package com.example.nt118;
+package com.example.nt118.homecourse;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -6,6 +6,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.nt118.Deadline.DeadlineActivity;
+import com.example.nt118.grades.GradeActivity;
+import com.example.nt118.ProfileActivity;
+import com.example.nt118.R;
 import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,27 +68,6 @@ public class HomeCourseActivity extends AppCompatActivity implements ClassAdapte
             });
         }
     }*/
-
-    private void setupBottomBarNavigation() {
-        // Thiết lập các sự kiện click cho bottom bar
-        View bottomBar = findViewById(R.id.bottom_bar);
-        if (bottomBar != null) {
-            bottomBar.findViewById(R.id.btnDeadline).setOnClickListener(v -> {
-                Intent intent = new Intent(HomeCourseActivity.this, DeadlineActivity.class);
-                startActivity(intent);
-            });
-
-            bottomBar.findViewById(R.id.btnExam).setOnClickListener(v -> {
-                Intent intent = new Intent(HomeCourseActivity.this, GradeActivity.class);
-                startActivity(intent);
-            });
-
-            bottomBar.findViewById(R.id.btnProfile).setOnClickListener(v -> {
-                Intent intent = new Intent(HomeCourseActivity.this, ProfileActivity.class);
-                startActivity(intent);
-            });
-        }
-    }
 
     private void selectDay(int index) {
         // Reset all buttons to default state
@@ -175,6 +159,36 @@ public class HomeCourseActivity extends AppCompatActivity implements ClassAdapte
 
         // Here you would normally open a detailed view or dialog
         // showClassDetails(classModel);
+    }
+
+    private void setupBottomBarNavigation() {
+        View bottomBar = findViewById(R.id.bottom_bar);
+        if (bottomBar != null) {
+            bottomBar.findViewById(R.id.btnDeadline).setOnClickListener(v -> {
+                Intent intent = new Intent(HomeCourseActivity.this, DeadlineActivity.class);
+                startActivity(intent);
+                finish();
+            });
+
+            bottomBar.findViewById(R.id.btnExam).setOnClickListener(v -> {
+                Intent intent = new Intent(HomeCourseActivity.this, GradeActivity.class);
+                startActivity(intent);
+                finish();
+            });
+
+            bottomBar.findViewById(R.id.btnProfile).setOnClickListener(v -> {
+                Intent intent = new Intent(HomeCourseActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                finish();
+            });
+
+            bottomBar.findViewById(R.id.btnHome).setOnClickListener(v -> {
+                if (!(HomeCourseActivity.this instanceof HomeCourseActivity)) {
+                    Intent intent = new Intent(HomeCourseActivity.this, GradeActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
 }
