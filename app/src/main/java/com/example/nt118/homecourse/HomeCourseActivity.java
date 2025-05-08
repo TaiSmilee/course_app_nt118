@@ -170,7 +170,7 @@ public class HomeCourseActivity extends AppCompatActivity implements ClassAdapte
                 finish();
             });
 
-            bottomBar.findViewById(R.id.btnExam).setOnClickListener(v -> {
+            bottomBar.findViewById(R.id.btnGrade).setOnClickListener(v -> {
                 Intent intent = new Intent(HomeCourseActivity.this, GradeActivity.class);
                 startActivity(intent);
                 finish();
