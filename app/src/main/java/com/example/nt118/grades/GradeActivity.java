@@ -13,6 +13,7 @@ import com.example.nt118.Deadline.DeadlineActivity;
 import com.example.nt118.ProfileActivity;
 import com.example.nt118.R;
 import com.example.nt118.homecourse.ClassAdapter;
+import com.example.nt118.homecourse.ClassModel; // Thêm import này
 import com.example.nt118.homecourse.HomeCourseActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -20,7 +21,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GradeActivity extends AppCompatActivity  implements ClassAdapter.ClassItemClickListener {
+public class GradeActivity extends AppCompatActivity {
 
     private TextView tvGPA;
     private TextView tvCredits;
@@ -59,7 +60,6 @@ public abstract class GradeActivity extends AppCompatActivity  implements ClassA
         tvGPA = findViewById(R.id.tvGPA);
         tvCredits = findViewById(R.id.tvCredits);
         btnSemester = findViewById(R.id.btnSemester);
-        btnBack = findViewById(R.id.btnBack);
         rvCourseGrades = findViewById(R.id.rvCourseGrades);
     }
 
@@ -75,8 +75,6 @@ public abstract class GradeActivity extends AppCompatActivity  implements ClassA
     }
 
     private void setupClickListeners() {
-        // Back button
-        btnBack.setOnClickListener(v -> finish());
 
         // Semester filter button
         btnSemester.setOnClickListener(v -> showSemesterDialog());
@@ -162,10 +160,7 @@ public abstract class GradeActivity extends AppCompatActivity  implements ClassA
             });
 
             bottomBar.findViewById(R.id.btnGrade).setOnClickListener(v -> {
-                if (!(GradeActivity.this instanceof GradeActivity)) {
-                    Intent intent = new Intent(GradeActivity.this, GradeActivity.class);
-                    startActivity(intent);
-                }
+
             });
 
             bottomBar.findViewById(R.id.btnProfile).setOnClickListener(v -> {
@@ -181,4 +176,6 @@ public abstract class GradeActivity extends AppCompatActivity  implements ClassA
             });
         }
     }
+
+
 }

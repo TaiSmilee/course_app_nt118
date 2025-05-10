@@ -42,7 +42,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, CourseDetailActivity.class);
 
-            // 👉 Gửi dữ liệu qua Intent (ví dụ: tên môn học)
+            // Gửi dữ liệu qua Intent
             intent.putExtra("subjectName", item.getSubjectName());
             intent.putExtra("startTime", item.getStartTime());
             intent.putExtra("endTime", item.getEndTime());
@@ -55,10 +55,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
     @Override
     public int getItemCount() {
         return classList.size();
-    }
-
-    public interface ClassItemClickListener {
-        void onClassItemClick(ClassModel classModel);
     }
 
     static class ClassViewHolder extends RecyclerView.ViewHolder {
