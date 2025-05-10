@@ -42,8 +42,8 @@ public class CourseGradeAdapter extends RecyclerView.Adapter<CourseGradeAdapter.
         holder.tvCourseCode.setText(course.getCourseCode());
         holder.tvCourseName.setText(course.getCourseName());
         holder.tvCredits.setText(String.valueOf(course.getCredits()) + " credits");
-        holder.tvNumericGrade.setText(String.format("%.1f", course.getNumericGrade()));
-        holder.tvLetterGrade.setText(course.getLetterGrade());
+        holder.tvGrade.setText(course.getLetterGrade());
+        holder.tvPoint.setText(String.format("%.1f", course.getNumericGrade()));
 
         // Set color based on grade
         int gradeColor = holder.itemView.getContext().getResources().getColor(android.R.color.black);
@@ -52,7 +52,6 @@ public class CourseGradeAdapter extends RecyclerView.Adapter<CourseGradeAdapter.
         } catch (Exception e) {
             // Use default color if parsing fails
         }
-        holder.tvLetterGrade.setTextColor(gradeColor);
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -71,14 +70,18 @@ public class CourseGradeAdapter extends RecyclerView.Adapter<CourseGradeAdapter.
         TextView tvCourseCode;
         TextView tvCourseName;
         TextView tvCredits;
-        TextView tvNumericGrade;
-        TextView tvLetterGrade;
+        TextView tvGrade;
+        TextView tvPoint;
+        TextView tvLecturer;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCourseCode = itemView.findViewById(R.id.tvCourseCode);
             tvCourseName = itemView.findViewById(R.id.tvCourseName);
             tvCredits = itemView.findViewById(R.id.tvCredits);
+            tvGrade = itemView.findViewById(R.id.tvGrade);
+            tvPoint = itemView.findViewById(R.id.tvPoint);
+            tvLecturer = itemView.findViewById(R.id.tvLecturer);
         }
     }
 }

@@ -6,10 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.nt118.Deadline.DeadlineActivity;
+import com.example.nt118.grades.GradeActivity;
+import com.example.nt118.homecourse.HomeCourseActivity;
 import com.google.android.material.tabs.TabLayout;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.Toolbar;
 import android.widget.VideoView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -53,6 +60,12 @@ public class CourseDetailActivity extends AppCompatActivity {
             return insets;
         });
 
+        ImageButton btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> {
+            onBackPressed();
+            // Hoặc: finish();
+        });
+
         handler = new Handler(Looper.getMainLooper());
         TextView toolbarTitle = findViewById(R.id.toolbarTitle);
         toolbarTitle.setText("Course Detail");
@@ -68,23 +81,6 @@ public class CourseDetailActivity extends AppCompatActivity {
         notificationList = findViewById(R.id.notificationList);
         videoSeekBar = findViewById(R.id.videoSeekBar);
         tabLayout = findViewById(R.id.tabLayout);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.nav_profile) {
-                Intent intent = new Intent(this, ProfileActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                return true;
-            } else if (itemId == R.id.nav_home) {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                return true;
-            }
-            return false;
-        });
 
 
         // Dummy video

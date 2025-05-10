@@ -15,7 +15,7 @@ import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeCourseActivity extends AppCompatActivity implements ClassAdapter.ClassItemClickListener {
+public class HomeCourseActivity extends AppCompatActivity {
 
     private MaterialButton[] dayButtons;
     private int selectedDayIndex = 1; // Default to day 07 (index 1)
@@ -42,7 +42,7 @@ public class HomeCourseActivity extends AppCompatActivity implements ClassAdapte
         // Setup RecyclerView
         rvClassList = findViewById(R.id.rvClassList);
         rvClassList.setLayoutManager(new LinearLayoutManager(this));
-        classAdapter = new ClassAdapter(classList, this);
+        classAdapter = new ClassAdapter(classList, this); // Pass context instead of listener
         rvClassList.setAdapter(classAdapter);
 
         // Set click listeners for days
@@ -55,19 +55,7 @@ public class HomeCourseActivity extends AppCompatActivity implements ClassAdapte
         updateClassInfo(selectedDayIndex);
 
         setupBottomBarNavigation();
-        //setupNotificationButton();
     }
-
-    /*private void setupNotificationButton() {
-        MaterialButton notificationButton = findViewById(R.id.headerLayout).findViewById(R.id.notificationButton);
-        if (notificationButton != null) {
-            notificationButton.setOnClickListener(v -> {
-                // Handle notification click
-                Intent intent = new Intent(HomeCourseActivity.this, NotificationActivity.class);
-                startActivity(intent);
-            });
-        }
-    }*/
 
     private void selectDay(int index) {
         // Reset all buttons to default state
@@ -85,7 +73,7 @@ public class HomeCourseActivity extends AppCompatActivity implements ClassAdapte
         selectedButton.setBackgroundTintList(getResources().getColorStateList(R.color.primary_blue));
         selectedButton.setTextColor(getResources().getColor(android.R.color.white));
 
-        // Special case for day 19 (with stroke)
+        // Special case for day 12
         if (index == 6) { // Day 12
             selectedButton.setStrokeColor(getResources().getColorStateList(R.color.primary_blue));
             selectedButton.setStrokeWidth(2);
@@ -102,63 +90,32 @@ public class HomeCourseActivity extends AppCompatActivity implements ClassAdapte
         classList.clear();
 
         // Based on the day index, load different classes
-        // This is just example data - in a real app, you would load from database or API
+        // Cần phải cập nhật để tạo đúng ClassModel theo constructor hiện tại
         switch (dayIndex) {
             case 0: // Sunday (06)
                 // No classes on Sunday
                 break;
             case 1: // Monday (07)
-                classList.add(new ClassModel("NT118.P21.CLC",
-                        "Lập trình ứng dụng di động",
-                        "Thứ 2, tiết 4-5, P.C201",
-                        "Phan Xuân Thiện"));
-                classList.add(new ClassModel("CS105.M21",
-                        "Đồ họa máy tính",
-                        "Thứ 2, tiết 6-9, P.H1.02",
-                        "Nguyễn Văn An"));
+                classList.add(new ClassModel("08:00", "10:00", "Lập trình ứng dụng di động", "C201"));
+                classList.add(new ClassModel("10:15", "12:15", "Đồ họa máy tính", "H1.02"));
                 break;
             case 2: // Tuesday (08)
-                classList.add(new ClassModel("IT003.M22",
-                        "Cấu trúc dữ liệu và giải thuật",
-                        "Thứ 3, tiết 1-3, P.B1.01",
-                        "Trần Thị Bình"));
-                classList.add(new ClassModel("IT001.M21",
-                        "Nhập môn lập trình",
-                        "Thứ 3, tiết 6-9, P.C114",
-                        "Lê Văn Cường"));
+                classList.add(new ClassModel("07:30", "09:30", "Cấu trúc dữ liệu và giải thuật", "B1.01"));
+                classList.add(new ClassModel("13:00", "16:00", "Nhập môn lập trình", "C114"));
                 break;
             case 3: // Wednesday (09)
-                classList.add(new ClassModel("NT106.M21",
-                        "Mạng máy tính",
-                        "Thứ 4, tiết 1-3, P.A1.01",
-                        "Đỗ Thị Dung"));
-                classList.add(new ClassModel("IT005.M21",
-                        "Nhập môn mạng máy tính",
-                        "Thứ 4, tiết 6-8, P.B4.05",
-                        "Hoàng Văn Em"));
+                classList.add(new ClassModel("07:30", "09:30", "Mạng máy tính", "A1.01"));
+                classList.add(new ClassModel("13:00", "15:30", "Nhập môn mạng máy tính", "B4.05"));
                 break;
             case 4: // Thursday (10)
             case 5: // Friday (11)
             case 6: // Saturday (12)
-                classList.add(new ClassModel("NT101.M21",
-                        "An toàn mạng",
-                        "Tiết 1-3, P.H5.01",
-                        "Nguyễn An Ninh"));
+                classList.add(new ClassModel("07:30", "09:30", "An toàn mạng", "H5.01"));
                 break;
         }
 
         // Notify adapter that data has changed
         classAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onClassItemClick(ClassModel classModel) {
-        // Handle click on class item - show detailed information
-        // For now, just show a toast
-        Toast.makeText(this, "Chi tiết: " + classModel.getClassName(), Toast.LENGTH_SHORT).show();
-
-        // Here you would normally open a detailed view or dialog
-        // showClassDetails(classModel);
     }
 
     private void setupBottomBarNavigation() {
@@ -183,12 +140,8 @@ public class HomeCourseActivity extends AppCompatActivity implements ClassAdapte
             });
 
             bottomBar.findViewById(R.id.btnHome).setOnClickListener(v -> {
-                if (!(HomeCourseActivity.this instanceof HomeCourseActivity)) {
-                    Intent intent = new Intent(HomeCourseActivity.this, GradeActivity.class);
-                    startActivity(intent);
-                }
+                // Đã ở màn hình Home rồi, không cần làm gì
             });
         }
     }
-
 }

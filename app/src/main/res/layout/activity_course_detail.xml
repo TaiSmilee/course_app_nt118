@@ -129,5 +129,4 @@
         </LinearLayout>
     </FrameLayout>
 
-    <include layout="@layout/bottom_bar"/>
 </LinearLayout>

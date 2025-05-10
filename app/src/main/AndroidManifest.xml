@@ -17,14 +17,23 @@
 
         <activity android:name=".CourseListActivity" />
 
-        <activity android:name=".MainActivity" />
-
         <activity android:name=".CourseDetailActivity" />
 
         <activity android:name=".StudentListActivity" />
 
+
+        <activity android:name=".ProfileActivity" />
+
+        <activity android:name=".grades.GradeActivity" />
+
+        <activity android:name=".Deadline.DeadlineActivity" />
+
+        <activity android:name=".Semester.StudentResultActivity" />
+
+        <activity android:name=".Attendance.AttendanceActivity" />
+
         <activity
-            android:name=".LoginActivity"
+         android:name=".homecourse.HomeCourseActivity"
             android:exported="true">
             <!-- Khôi phục intent-filter MAIN -->
             <intent-filter>
@@ -33,15 +42,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".homecourse.HomeCourseActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".grades.GradeActivity" />
-        <activity android:name=".Deadline.DeadlineActivity" />
-        <activity android:name=".Semester.StudentResultActivity" />
-        <activity android:name=".Attendance.AttendanceActivity" />
         <!-- Xóa Activity Attendance nếu không cần nữa -->
         <!--
         <activity
+<activity android:name=".homecourse.HomeCourseActivity" />
+ android:name=".LoginActivity"
             android:name=".Attendance.AttendanceActivity"
             android:exported="true">
             <intent-filter>

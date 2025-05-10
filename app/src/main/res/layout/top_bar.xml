@@ -7,9 +7,15 @@
     android:background="@android:color/white"
     android:elevation="4dp"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:menu="@menu/top_bar_menu"
-    app:navigationIcon="@drawable/ic_back">
+    app:menu="@menu/top_bar_menu">
 
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Back" />
     <!-- Tiêu đề -->
     <TextView
         android:id="@+id/toolbarTitle"
