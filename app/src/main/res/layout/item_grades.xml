@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="NT118.P21.CLC"
-                    android:textColor="#1A237E"
+                    android:textColor="#0000FF"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -101,7 +101,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Credits"
+                    android:text="Số chỉ"
                     android:textColor="#666666"
                     android:textSize="14sp" />
 
@@ -125,7 +125,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lecturer"
+                    android:text="Giảng viên"
                     android:textColor="#666666"
                     android:textSize="14sp" />
 
@@ -148,7 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginTop="8dp"
-            android:text="View Details"
+            android:text="Chi tiết"
             android:textColor="#0099FF"
             app:icon="@drawable/ic_arrow_forward"
             app:iconGravity="end"

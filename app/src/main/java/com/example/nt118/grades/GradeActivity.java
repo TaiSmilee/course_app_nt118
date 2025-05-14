@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.nt118.Deadline.DeadlineActivity;
 import com.example.nt118.ProfileActivity;
 import com.example.nt118.R;
-import com.example.nt118.homecourse.ClassAdapter;
-import com.example.nt118.homecourse.ClassModel; // Thêm import này
+
 import com.example.nt118.homecourse.HomeCourseActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;

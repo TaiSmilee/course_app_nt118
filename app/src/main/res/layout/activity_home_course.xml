@@ -77,7 +77,7 @@
                     android:id="@+id/tvMonth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="April"
+                    android:text="Tháng 4"
                     android:textColor="#1A237E"
                     android:textSize="28sp"
                     android:textStyle="bold" />
@@ -320,7 +320,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="8dp"
-        android:text="Your Schedule"
+        android:text="Lịch học"
         android:textColor="#1A237E"
         android:textSize="20sp"
         android:textStyle="bold" />

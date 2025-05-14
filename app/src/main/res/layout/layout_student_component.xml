@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Courses"
+                android:text="Các lớp"
                 android:textAlignment="center"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -68,12 +68,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Result"
+                android:text="Điểm"
                 android:textAlignment="center"
                 android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layoutTuition"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -94,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Tuition"
+                android:text="Học phí"
                 android:textAlignment="center"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -124,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Attendance"
+                android:text="Điểm danh"
                 android:textAlignment="center"
                 android:textSize="16sp" />
         </LinearLayout>

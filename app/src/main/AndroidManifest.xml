@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,50 +14,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Nt118"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Tuition.TuitionActivity"
+            android:exported="false" />
         <!-- Các activity khác của bạn -->
-
         <activity android:name=".CourseListActivity" />
-
         <activity android:name=".CourseDetailActivity" />
-
         <activity android:name=".StudentListActivity" />
-
-
         <activity android:name=".ProfileActivity" />
-
         <activity android:name=".grades.GradeActivity" />
-
         <activity android:name=".Deadline.DeadlineActivity" />
-
         <activity android:name=".Semester.StudentResultActivity" />
-
         <activity android:name=".Attendance.AttendanceActivity" />
-
         <activity
-         android:name=".homecourse.HomeCourseActivity"
-            android:exported="true">
-            <!-- Khôi phục intent-filter MAIN -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <!-- Xóa Activity Attendance nếu không cần nữa -->
-        <!--
+            android:name=".LoginActivity"
+            android:exported="false"></activity>
         <activity
-<activity android:name=".homecourse.HomeCourseActivity" />
- android:name=".LoginActivity"
-            android:name=".Attendance.AttendanceActivity"
+            android:name=".homecourse.HomeCourseActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        -->
-
     </application>
 
 </manifest>

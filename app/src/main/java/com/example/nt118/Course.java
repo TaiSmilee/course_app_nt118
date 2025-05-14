@@ -1,6 +1,7 @@
 package com.example.nt118;
 
 public class Course {
+    private String classID;
     private String className;
     private String theoryDay;
     private String theoryStart;
@@ -9,9 +10,10 @@ public class Course {
     private String practiceStart;
     private String practiceEnd;
 
-    public Course(String className,
+    public Course(String classID, String className,
                   String theoryDay, String theoryStart, String theoryEnd,
                   String practiceDay, String practiceStart, String practiceEnd) {
+        this.classID = classID;
         this.className = className;
         this.theoryDay = theoryDay;
         this.theoryStart = theoryStart;
@@ -20,6 +22,8 @@ public class Course {
         this.practiceStart = practiceStart;
         this.practiceEnd = practiceEnd;
     }
+
+    public  String getClassID() {return classID;}
 
     public String getClassName() { return className; }
 
