@@ -2,6 +2,8 @@ package com.example.nt118;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -9,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nt118.CourseAdapter;
-import com.example.nt118.Course;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.nt118.Deadline.DeadlineActivity;
+import com.example.nt118.grades.GradeActivity;
+import com.example.nt118.homecourse.HomeCourseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,34 +24,25 @@ public class CourseListActivity extends AppCompatActivity {
     private CourseAdapter courseAdapter;
     private List<Course> courseList;
 
+    private ImageView btnBack;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_list);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.nav_profile) {
-                Intent intent = new Intent(this, ProfileActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                return true;
-            } else if (itemId == R.id.nav_home) {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                return true;
-            }
-            return false;
-        });
-
-        TextView toolbarTitle = findViewById(R.id.toolbarTitle);
-        toolbarTitle.setText("Course List");
-
         recyclerView = findViewById(R.id.recyclerViewCourses);
-        //tvCourseCount = findViewById(R.id.tvCourseCount);
+
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Hành động khi bấm ảnh
+                Intent intent = new Intent(CourseListActivity.this, CourseDetailActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -57,15 +50,46 @@ public class CourseListActivity extends AppCompatActivity {
         courseList = new ArrayList<>();
 
         // Thêm một số dữ liệu mẫu
-        courseList.add(new Course("Lớp Java A", "Thứ 2", "08:00", "10:00", "Thứ 5", "14:00", "16:00"));
-        courseList.add(new Course("Lớp Android", "Thứ 3", "09:00", "11:00", "", "", ""));
-        courseList.add(new Course("Lớp Web", "", "", "", "Thứ 7", "13:00", "15:00"));
-        courseList.add(new Course("Lớp Python", "", "", "", "", "", ""));
+        courseList.add(new Course("NT108","Lập trình ứng dụng di động", "Thứ 2", "08:00", "10:00", "Thứ 5", "14:00", "16:00"));
+        courseList.add(new Course("IT001", "Nhập môn lập trình","Thứ 3", "09:00", "11:00", "", "", ""));
+        courseList.add(new Course("IT003", "Cấu trúc dữ liệu và giải thuật", "", "", "", "Thứ 7", "13:0", "15:00"));
+        courseList.add(new Course("IT002", "Lập trình hướng đối tượng", "", "", "", "", "", ""));
 
         // Cập nhật số lượng
         //tvCourseCount.setText("Tổng số khóa học: " + courseList.size());
 
         courseAdapter = new CourseAdapter(this, courseList);
         recyclerView.setAdapter(courseAdapter);
+
+        setupBottomBarNavigation();
+    }
+
+    private void setupBottomBarNavigation() {
+        View bottomBar = findViewById(R.id.bottom_bar);
+        if (bottomBar != null) {
+            bottomBar.findViewById(R.id.btnDeadline).setOnClickListener(v -> {
+                Intent intent = new Intent(CourseListActivity.this, DeadlineActivity.class);
+                startActivity(intent);
+                finish();
+            });
+
+            bottomBar.findViewById(R.id.btnGrade).setOnClickListener(v -> {
+                Intent intent = new Intent(CourseListActivity.this, GradeActivity.class);
+                startActivity(intent);
+                finish();
+            });
+
+            bottomBar.findViewById(R.id.btnProfile).setOnClickListener(v -> {
+                Intent intent = new Intent(CourseListActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                finish();
+            });
+
+            bottomBar.findViewById(R.id.btnHome).setOnClickListener(v -> {
+                Intent intent = new Intent(CourseListActivity.this, HomeCourseActivity.class);
+                startActivity(intent);
+                finish();
+            });
+        }
     }
 }

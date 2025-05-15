@@ -104,7 +104,7 @@ public class HomeCourseActivity extends AppCompatActivity {
                 classList.add(new ClassModel("13:00", "16:00", "Nhập môn lập trình", "C114"));
                 break;
             case 3: // Wednesday (09)
-                classList.add(new ClassModel("07:30", "09:30", "Mạng máy tính", "A1.01"));
+                classList.add(new ClassModel("07:30", "09:30", "Lập trình hướng đối tượng", "A1.01"));
                 classList.add(new ClassModel("13:00", "15:30", "Nhập môn mạng máy tính", "B4.05"));
                 break;
             case 4: // Thursday (10)

@@ -7,47 +7,31 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.widget.ImageView;
 
 import com.example.nt118.Deadline.DeadlineActivity;
 import com.example.nt118.grades.GradeActivity;
 import com.example.nt118.homecourse.HomeCourseActivity;
 import com.google.android.material.tabs.TabLayout;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
-import android.widget.Toolbar;
-import android.widget.VideoView;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import androidx.core.widget.NestedScrollView;
-import android.net.Uri;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.ArrayAdapter;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import android.widget.SeekBar;
-import android.os.Handler;
 import android.content.Intent;
-import android.os.Looper;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class CourseDetailActivity extends AppCompatActivity {
     private ListView lessonList;
     private ListView notificationList;
-    private VideoView courseVideo;
-    private TabLayout tabLayout;
-    private Button btnStudentList;
-    private TextView courseTitle;
-    private SeekBar videoSeekBar;
-    private Timer timer;
-    private Handler handler;
-    private Runnable updateSeekBar;
-    private boolean wasPlayingBeforeSeek = false;
-    private boolean userIsSeeking = false;
+    private WebView courseVideo;
+
+    private ImageView btnBack;
+    private ImageView btnStudentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,90 +44,36 @@ public class CourseDetailActivity extends AppCompatActivity {
             return insets;
         });
 
-        ImageButton btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> {
-            onBackPressed();
-            // Hoặc: finish();
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Hành động khi bấm ảnh
+                Intent intent = new Intent(CourseDetailActivity.this, CourseListActivity.class);
+                startActivity(intent);
+                finish();
+            }
         });
 
-        handler = new Handler(Looper.getMainLooper());
-        TextView toolbarTitle = findViewById(R.id.toolbarTitle);
-        toolbarTitle.setText("Course Detail");
+        btnStudentList = findViewById(R.id.btnStudentList);
+        btnStudentList.setOnClickListener(v -> {
+            Intent intent = new Intent(CourseDetailActivity.this, StudentListActivity.class);
+            startActivity(intent);
+        });
 
         // Ánh xạ view
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         NestedScrollView lessonsContent = findViewById(R.id.lessonsContent);
         LinearLayout notificationsContent = findViewById(R.id.notificationsContent);
-        courseVideo = findViewById(R.id.courseVideo);
-        courseTitle = findViewById(R.id.courseTitle);
-        btnStudentList = findViewById(R.id.btnStudentList);
+        courseVideo = findViewById(R.id.webView);
+        String video = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/dQw4w9WgXcQ?si=21ozcO2025g1XdJ2\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>";
+        courseVideo.loadData(video, "text/html", "utf-8");
+        courseVideo.getSettings().setJavaScriptEnabled(true);
+        courseVideo.setWebChromeClient(new WebChromeClient());
+
         lessonList = findViewById(R.id.lessonList);
         notificationList = findViewById(R.id.notificationList);
-        videoSeekBar = findViewById(R.id.videoSeekBar);
         tabLayout = findViewById(R.id.tabLayout);
-
-
-        // Dummy video
-        String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.sample_video;
-        Uri uri = Uri.parse(videoPath);
-        courseVideo.setVideoURI(uri);
-        courseVideo.setOnPreparedListener(mp -> {
-            videoSeekBar.setMax(courseVideo.getDuration()); // Đặt độ dài SeekBar = thời gian video
-
-            updateSeekBar = new Runnable() {
-                @Override
-                public void run() {
-                    videoSeekBar.setProgress(courseVideo.getCurrentPosition());
-                    handler.postDelayed(this, 500);
-                }
-            };
-            courseVideo.start();
-            handler.post(updateSeekBar);
-        });
-
-        // Xử lý khi người dùng kéo SeekBar để tua video
-        videoSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // Lưu lại trạng thái trước khi người dùng kéo SeekBar
-                wasPlayingBeforeSeek = courseVideo.isPlaying();
-                courseVideo.pause(); // Dừng video tạm thời để tua mượt hơn
-            }
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) {
-                    courseVideo.seekTo(progress); // Tua đến vị trí mong muốn
-                }
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // Nếu trước đó đang phát thì phát tiếp sau khi tua
-                if (wasPlayingBeforeSeek) {
-                    courseVideo.start();
-                }
-            }
-        });
-
-        // Phát hoặc dừng video khi nhấn vào
-        courseVideo.setOnClickListener(v -> {
-            if (userIsSeeking) return; // Đừng xử lý khi vừa tua xong
-
-            if (courseVideo.isPlaying()) {
-                courseVideo.pause();
-            } else {
-                if (courseVideo.getCurrentPosition() < courseVideo.getDuration()) {
-                    courseVideo.start();
-                }
-            }
-        });
-
-        // Xử lý khi nhấn nút Student List
-        btnStudentList.setOnClickListener(v -> {
-            Intent intent = new Intent(CourseDetailActivity.this, StudentListActivity.class);
-            startActivity(intent);
-        });
 
         // Dữ liệu giả danh sách bài học
         ArrayList<String> lessons = new ArrayList<>();
@@ -188,14 +118,36 @@ public class CourseDetailActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
+
+        setupBottomBarNavigation();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (courseVideo != null && courseVideo.isPlaying()) {
-            courseVideo.pause();
+    private void setupBottomBarNavigation() {
+        View bottomBar = findViewById(R.id.bottom_bar);
+        if (bottomBar != null) {
+            bottomBar.findViewById(R.id.btnDeadline).setOnClickListener(v -> {
+                Intent intent = new Intent(CourseDetailActivity.this, DeadlineActivity.class);
+                startActivity(intent);
+                finish();
+            });
+
+            bottomBar.findViewById(R.id.btnGrade).setOnClickListener(v -> {
+                Intent intent = new Intent(CourseDetailActivity.this, GradeActivity.class);
+                startActivity(intent);
+                finish();
+            });
+
+            bottomBar.findViewById(R.id.btnProfile).setOnClickListener(v -> {
+                Intent intent = new Intent(CourseDetailActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                finish();
+            });
+
+            bottomBar.findViewById(R.id.btnHome).setOnClickListener(v -> {
+                Intent intent = new Intent(CourseDetailActivity.this, HomeCourseActivity.class);
+                startActivity(intent);
+                finish();
+            });
         }
     }
-
 }

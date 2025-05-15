@@ -32,7 +32,6 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         Student student = studentList.get(position);
         holder.studentNameTextView.setText(student.getName());
         holder.studentIdTextView.setText(student.getId());
-        holder.avatarTextView.setText(student.getAvatar());
     }
 
     @Override
@@ -41,15 +40,12 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView studentNameTextView, studentIdTextView, avatarTextView;
-        ImageView menuButton;
+        TextView studentNameTextView, studentIdTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            studentNameTextView = itemView.findViewById(R.id.studentNameTextView);
-            studentIdTextView = itemView.findViewById(R.id.studentIdTextView);
-            avatarTextView = itemView.findViewById(R.id.avatarTextView);
-            menuButton = itemView.findViewById(R.id.menuButton);
+            studentNameTextView = itemView.findViewById(R.id.tvStudentName);
+            studentIdTextView = itemView.findViewById(R.id.tvStudentID);
         }
     }
 }

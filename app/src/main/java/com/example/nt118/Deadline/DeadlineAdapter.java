@@ -26,15 +26,14 @@ public class DeadlineAdapter extends RecyclerView.Adapter<DeadlineAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvSubject, tvDescription, tvDeadline;
-        Button btnView;
+        TextView tvSubject, tvName, tvDescription, tvDeadline;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvSubject = itemView.findViewById(R.id.tv_subject);
+            tvName = itemView.findViewById(R.id.tv_name);
             tvDescription = itemView.findViewById(R.id.tv_description);
             tvDeadline = itemView.findViewById(R.id.tv_deadline);
-            btnView = itemView.findViewById(R.id.btn_view);
         }
     }
 
@@ -49,15 +48,9 @@ public class DeadlineAdapter extends RecyclerView.Adapter<DeadlineAdapter.ViewHo
     public void onBindViewHolder(@NonNull DeadlineAdapter.ViewHolder holder, int position) {
         DeadlineItem item = deadlines.get(position);
         holder.tvSubject.setText(item.subject);
+        holder.tvName.setText(item.name);
         holder.tvDescription.setText(item.description);
-        holder.tvDeadline.setText("📅 " + item.deadline);
-
-        holder.btnView.setOnClickListener(v -> {
-            if (item.url != null && !item.url.isEmpty()) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.url));
-                context.startActivity(intent);
-            }
-        });
+        holder.tvDeadline.setText(item.deadline);
     }
 
     @Override

@@ -36,6 +36,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
         Course course = courseList.get(position);
+        holder.tvClassID.setText(course.getClassID());
         holder.tvClassName.setText(course.getClassName());
         holder.tvTheory.setText("Lý thuyết: " + course.getTheoryTime());
         holder.tvPractice.setText("Thực hành: " + course.getPracticeTime());
@@ -56,10 +57,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     }
 
     public static class CourseViewHolder extends RecyclerView.ViewHolder {
-        TextView tvClassName, tvTheory, tvPractice;
+        TextView tvClassID, tvClassName, tvTheory, tvPractice;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvClassID = itemView.findViewById(R.id.tvClassID);
             tvClassName = itemView.findViewById(R.id.tvClassName);
             tvTheory = itemView.findViewById(R.id.tvTheory);
             tvPractice = itemView.findViewById(R.id.tvPractice);

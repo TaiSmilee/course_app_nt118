@@ -1,62 +1,61 @@
-package com.example.nt118;
+package com.example.nt118.Tuition;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.util.List;
-import java.util.ArrayList;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nt118.CourseDetailActivity;
+import com.example.nt118.CourseListActivity;
 import com.example.nt118.Deadline.DeadlineActivity;
+import com.example.nt118.ProfileActivity;
+import com.example.nt118.R;
 import com.example.nt118.grades.GradeActivity;
 import com.example.nt118.homecourse.HomeCourseActivity;
 
-public class StudentListActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class TuitionActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private EditText searchBar;
-    private List<Student> studentList;
-    private StudentAdapter adapter;
-
+    private TuitionAdapter adapter;
+    private List<Tuition> tuitionList;
     private ImageView btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_student_list);
+        setContentView(R.layout.activity_tuition);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        searchBar = findViewById(R.id.search_bar);
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Hành động khi bấm ảnh
-                Intent intent = new Intent(StudentListActivity.this, CourseDetailActivity.class);
+                Intent intent = new Intent(TuitionActivity.this, ProfileActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
 
-        studentList = new ArrayList<>();
-        studentList.add(new Student("Nguyễn Minh D", "22522944"));
-        studentList.add(new Student("Nguyễn Văn A", "21523241"));
-        studentList.add(new Student("Trần Thị B", "21334567"));
-        studentList.add(new Student("Lê Văn C", "22234589"));
-
-        adapter = new StudentAdapter(this, studentList);
+        recyclerView = findViewById(R.id.recyclerTutiotion);  // đúng id như bạn nói
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        tuitionList = new ArrayList<>();
+        tuitionList.add(new Tuition("INT113", 3));
+        tuitionList.add(new Tuition("MAT101", 4));
+        tuitionList.add(new Tuition("PHY102", 2));
+
+        adapter = new TuitionAdapter(tuitionList);
         recyclerView.setAdapter(adapter);
 
         setupBottomBarNavigation();
@@ -66,28 +65,29 @@ public class StudentListActivity extends AppCompatActivity {
         View bottomBar = findViewById(R.id.bottom_bar);
         if (bottomBar != null) {
             bottomBar.findViewById(R.id.btnDeadline).setOnClickListener(v -> {
-                Intent intent = new Intent(StudentListActivity.this, DeadlineActivity.class);
+                Intent intent = new Intent(TuitionActivity.this, DeadlineActivity.class);
                 startActivity(intent);
                 finish();
             });
 
             bottomBar.findViewById(R.id.btnGrade).setOnClickListener(v -> {
-                Intent intent = new Intent(StudentListActivity.this, GradeActivity.class);
+                Intent intent = new Intent(TuitionActivity.this, GradeActivity.class);
                 startActivity(intent);
                 finish();
             });
 
             bottomBar.findViewById(R.id.btnProfile).setOnClickListener(v -> {
-                Intent intent = new Intent(StudentListActivity.this, ProfileActivity.class);
+                Intent intent = new Intent(TuitionActivity.this, ProfileActivity.class);
                 startActivity(intent);
                 finish();
             });
 
             bottomBar.findViewById(R.id.btnHome).setOnClickListener(v -> {
-                Intent intent = new Intent(StudentListActivity.this, HomeCourseActivity.class);
+                Intent intent = new Intent(TuitionActivity.this, HomeCourseActivity.class);
                 startActivity(intent);
                 finish();
             });
         }
     }
+
 }
