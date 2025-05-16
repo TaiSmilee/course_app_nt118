@@ -27,7 +27,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
     @NonNull
     @Override
     public ClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.class_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_class_home_course, parent, false);
         return new ClassViewHolder(view);
     }
 
@@ -37,7 +37,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         holder.startTime.setText(item.getStartTime());
         holder.endTime.setText(item.getEndTime());
         holder.subjectName.setText(item.getSubjectName());
-        holder.room.setText("Room: " + item.getRoom());
+        holder.room.setText("Phòng: " + item.getRoom());
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, CourseDetailActivity.class);
