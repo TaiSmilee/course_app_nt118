@@ -15,6 +15,10 @@ import com.example.nt118.Deadline.DeadlineActivity;
 import com.example.nt118.grades.GradeActivity;
 import com.example.nt118.homecourse.HomeCourseActivity;
 import com.google.android.material.tabs.TabLayout;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+
 import android.widget.ListView;
 import android.widget.LinearLayout;
 import androidx.core.widget.NestedScrollView;
@@ -65,11 +69,18 @@ public class CourseDetailActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         NestedScrollView lessonsContent = findViewById(R.id.lessonsContent);
         LinearLayout notificationsContent = findViewById(R.id.notificationsContent);
-        courseVideo = findViewById(R.id.webView);
-        String video = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/dQw4w9WgXcQ?si=21ozcO2025g1XdJ2\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>";
-        courseVideo.loadData(video, "text/html", "utf-8");
-        courseVideo.getSettings().setJavaScriptEnabled(true);
-        courseVideo.setWebChromeClient(new WebChromeClient());
+
+        YouTubePlayerView youTubePlayerView = findViewById(R.id.youtube_player_view);
+        getLifecycle().addObserver(youTubePlayerView);
+
+        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(YouTubePlayer youTubePlayer) {
+                String videoId = "dQw4w9WgXcQ";
+                youTubePlayer.loadVideo(videoId, 0);
+            }
+        });
+
 
         lessonList = findViewById(R.id.lessonList);
         notificationList = findViewById(R.id.notificationList);
