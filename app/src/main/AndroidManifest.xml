@@ -13,32 +13,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nt118"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        android:usesCleartextTraffic="true">  <!-- Chỉ cần dòng này -->
+        >
         <activity
-            android:name=".Attendance.AttendanceClassListActivity"
+            android:name=".UI.Attendance.AttendanceClassListActivity"
             android:exported="false" />
         <activity
-            android:name=".Tuition.TuitionActivity"
+            android:name=".UI.Tuition.TuitionActivity"
             android:exported="false" /> <!-- Các activity khác của bạn -->
-        <activity android:name=".CourseListActivity" />
-        <activity android:name=".CourseDetailActivity" />
-        <activity android:name=".StudentListActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".grades.GradeActivity" />
-        <activity android:name=".Deadline.DeadlineActivity" />
-        <activity android:name=".Semester.StudentResultActivity" />
-        <activity android:name=".Attendance.AttendanceActivity" />
+        <activity android:name=".UI.CourseListActivity" />
+        <activity android:name=".UI.CourseDetailActivity" />
+        <activity android:name=".UI.StudentListActivity" />
+        <activity android:name=".UI.ProfileActivity" />
+        <activity android:name=".UI.grades.GradeActivity" />
+        <activity android:name=".UI.Deadline.DeadlineActivity" />
+        <activity android:name=".UI.Semester.StudentResultActivity" />
+        <activity android:name=".UI.Attendance.AttendanceActivity" />
         <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".homecourse.HomeCourseActivity"
+            android:name=".UI.Login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".UI.homecourse.HomeCourseActivity"
+            android:exported="false">
+
         </activity>
     </application>
 
