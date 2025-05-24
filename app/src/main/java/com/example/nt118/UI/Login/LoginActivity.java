@@ -3,8 +3,6 @@ package com.example.nt118.UI.Login;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,26 +21,38 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText etStudentId, etPassword;
+    private EditText etEmail, etPassword;
     private Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
 
         // Ánh xạ các thành phần giao diện
-        etStudentId = findViewById(R.id.etEmail);
+        etEmail = findViewById(R.id.etStudentId);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        //tvForgotPassword = findViewById(R.id.tvForgotPassword);
 
         // Xử lý sự kiện khi nhấn nút đăng nhập
         btnLogin.setOnClickListener(v -> {
-            String studentId = etStudentId.getText().toString().trim();
+            String studentId = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
 
+            // Validate input
+            if (studentId.isEmpty()) {
+                etEmail.setError("Vui lòng nhập mã số sinh viên");
+                etEmail.requestFocus();
+                return;
+            }
+
+            if (password.isEmpty()) {
+                etPassword.setError("Vui lòng nhập mật khẩu");
+                etPassword.requestFocus();
+                return;
+            }
+
+            // Thực hiện đăng nhập
             RetrofitClient.getInstance()
                     .getAuthApi()
                     .login(new LoginRequest(studentId, password))
@@ -51,45 +61,44 @@ public class LoginActivity extends AppCompatActivity {
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                             if (response.isSuccessful() && response.body() != null) {
                                 LoginResponse loginResponse = response.body();
-                                Log.d("LoginDebug", "Response received - Status: " + loginResponse.isSuccess());
-                                Log.d("LoginDebug", "Message: " + loginResponse.getMessage());
-                                Log.d("LoginDebug", "Token: " + loginResponse.getToken());
-                                Log.d("LoginDebug", "StudentId: " + loginResponse.getStudentId());
-                                
                                 if (loginResponse.isSuccess()) {
-                                    // Lưu thông tin vào SharedPreferences
-                                    SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putString("token", loginResponse.getToken());
-                                    editor.putString("studentId", loginResponse.getStudentId());
-                                    editor.putString("name", loginResponse.getName());
-                                    editor.putString("email", loginResponse.getEmail());
-                                    editor.putString("role", loginResponse.getRole());
+                                    // Lưu token và thông tin người dùng
+                                    SharedPreferences prefs = getSharedPreferences("APP_PREF", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.putString("TOKEN", loginResponse.getToken());
+                                    editor.putString("STUDENT_ID", loginResponse.getStudentId());
+                                    editor.putString("NAME", loginResponse.getName());
+                                    editor.putString("EMAIL", loginResponse.getEmail());
+                                    editor.putString("ROLE", loginResponse.getRole());
                                     editor.apply();
 
-                                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                    Log.d("LoginDebug", "Đang chuyển sang HomeCourseActivity");
-                                    startActivity(new Intent(LoginActivity.this, HomeCourseActivity.class));
-                                    Log.d("LoginDebug", "startActivity đã gọi");
+                                    // Hiển thị thông báo thành công
+                                    Toast.makeText(LoginActivity.this, 
+                                            loginResponse.getMessage(), 
+                                            Toast.LENGTH_SHORT).show();
+
+                                    // Chuyển đến màn hình chính
+                                    Intent intent = new Intent(LoginActivity.this, HomeCourseActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
                                     finish();
                                 } else {
-                                    Log.d("LoginDebug", "đăng nhập thất bại");
-                                    // Đăng nhập thất bại
-                                    Toast.makeText(LoginActivity.this,
-                                            loginResponse.getMessage(),
+                                    // Hiển thị thông báo lỗi từ server
+                                    Toast.makeText(LoginActivity.this, 
+                                            loginResponse.getMessage(), 
                                             Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                Log.d("LoginDebug", "Response not successful or body is null");
-                                Toast.makeText(LoginActivity.this,
-                                        "Lỗi đăng nhập: " + (response.body() != null ? response.body().getMessage() : "Unknown error"),
+                                // Hiển thị thông báo lỗi chung
+                                Toast.makeText(LoginActivity.this, 
+                                        "Đăng nhập thất bại. Vui lòng thử lại!", 
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<LoginResponse> call, Throwable t) {
-                            // Xử lý lỗi kết nối
+                            // Hiển thị thông báo lỗi kết nối
                             Toast.makeText(LoginActivity.this,
                                     "Lỗi kết nối: " + t.getMessage(),
                                     Toast.LENGTH_SHORT).show();

@@ -12,18 +12,18 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Đăng nhập"
         android:textSize="32sp"
         android:textStyle="bold"
         android:layout_marginBottom="32dp"/>
 
-    <!-- Ô nhập email/username -->
+    <!-- Ô nhập mã số sinh viên -->
     <EditText
-        android:id="@+id/etEmail"
+        android:id="@+id/etStudentId"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
+        android:hint="Mã số sinh viên"
+        android:inputType="text"
         android:layout_marginBottom="48dp"/>
 
     <!-- Ô nhập mật khẩu -->
@@ -31,7 +31,7 @@
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="Password"
+        android:hint="Mật khẩu"
         android:inputType="textPassword"
         android:layout_marginBottom="48dp"/>
 
@@ -40,7 +40,7 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:text="Login"
+        android:text="Đăng nhập"
         android:textSize="20sp"
         app:cornerRadius="5dp"
         app:backgroundTint="#0013DF"
