@@ -31,7 +31,11 @@ public class RetrofitClient {
         return instance;
     }
 
-    public AuthAPI getAuthApi() {
-        return retrofit.create(AuthAPI.class);
+    public <T> T createService(Class<T> serviceClass) {
+        return retrofit.create(serviceClass);
+    }
+
+    public AuthApi getAuthApi() {
+        return retrofit.create(AuthApi.class);
     }
 }

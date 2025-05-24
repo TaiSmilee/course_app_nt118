@@ -3,6 +3,7 @@ package com.example.nt118.UI.Login;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,9 +23,8 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText etEmail, etPassword;
+    private EditText etStudentId, etPassword;
     private Button btnLogin;
-    private TextView tvForgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +33,14 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Ánh xạ các thành phần giao diện
-        etEmail = findViewById(R.id.etEmail);
+        etStudentId = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         //tvForgotPassword = findViewById(R.id.tvForgotPassword);
 
         // Xử lý sự kiện khi nhấn nút đăng nhập
         btnLogin.setOnClickListener(v -> {
-            String studentId = etEmail.getText().toString().trim();
+            String studentId = etStudentId.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
 
             RetrofitClient.getInstance()
@@ -51,20 +51,39 @@ public class LoginActivity extends AppCompatActivity {
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                             if (response.isSuccessful() && response.body() != null) {
                                 LoginResponse loginResponse = response.body();
+                                Log.d("LoginDebug", "Response received - Status: " + loginResponse.isSuccess());
+                                Log.d("LoginDebug", "Message: " + loginResponse.getMessage());
+                                Log.d("LoginDebug", "Token: " + loginResponse.getToken());
+                                Log.d("LoginDebug", "StudentId: " + loginResponse.getStudentId());
+                                
                                 if (loginResponse.isSuccess()) {
-                                    // Đăng nhập thành công
-                                    Toast.makeText(LoginActivity.this,
-                                            "Đăng nhập thành công",
-                                            Toast.LENGTH_SHORT).show();
-                                    // TODO: Chuyển đến màn hình chính
+                                    // Lưu thông tin vào SharedPreferences
+                                    SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("token", loginResponse.getToken());
+                                    editor.putString("studentId", loginResponse.getStudentId());
+                                    editor.putString("name", loginResponse.getName());
+                                    editor.putString("email", loginResponse.getEmail());
+                                    editor.putString("role", loginResponse.getRole());
+                                    editor.apply();
+
+                                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                    Log.d("LoginDebug", "Đang chuyển sang HomeCourseActivity");
                                     startActivity(new Intent(LoginActivity.this, HomeCourseActivity.class));
+                                    Log.d("LoginDebug", "startActivity đã gọi");
                                     finish();
                                 } else {
+                                    Log.d("LoginDebug", "đăng nhập thất bại");
                                     // Đăng nhập thất bại
                                     Toast.makeText(LoginActivity.this,
                                             loginResponse.getMessage(),
                                             Toast.LENGTH_SHORT).show();
                                 }
+                            } else {
+                                Log.d("LoginDebug", "Response not successful or body is null");
+                                Toast.makeText(LoginActivity.this,
+                                        "Lỗi đăng nhập: " + (response.body() != null ? response.body().getMessage() : "Unknown error"),
+                                        Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -76,39 +95,6 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
-
-//            // Kiểm tra dữ liệu nhập vào
-//            if (username.isEmpty() || password.isEmpty()) {
-//                Toast.makeText(LoginActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//
-//            // Kiểm tra định dạng email
-//            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-//                Toast.makeText(LoginActivity.this, "Email không hợp lệ", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-
-            // Gọi hàm xử lý đăng nhập
-            //performLogin(email, password);
         });
     }
-
-//    private void performLogin(String email, String password) {
-//        // Login giả lập - thay bằng gọi API thật nếu có
-//        if (email.equals("test@example.com") && password.equals("123456")) {
-//            Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-//
-//            // Lưu trạng thái đăng nhập
-//
-//            SharedPreferences prefs = getSharedPreferences("APP_PREF", MODE_PRIVATE);
-//            SharedPreferences.Editor editor = prefs.edit();
-//            editor.clear(); // xoá hết, hoặc editor.remove("IS_LOGGED_IN");
-//            editor.apply();
-//            startActivity(new Intent(LoginActivity.this, HomeCourseActivity.class));
-//            finish(); // đóng LoginActivity
-//        } else {
-//            Toast.makeText(LoginActivity.this, "Đăng nhập thất bại, kiểm tra lại thông tin", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 }

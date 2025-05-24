@@ -35,16 +35,17 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
         Course course = courseList.get(position);
-        holder.tvClassID.setText(course.getClassID());
-        holder.tvClassName.setText(course.getClassName());
-        holder.tvTheory.setText("Lý thuyết: " + course.getTheoryTime());
-        holder.tvPractice.setText("Thực hành: " + course.getPracticeTime());
+        holder.tvCourseId.setText(course.getCourseId());
+        holder.tvCourseName.setText(course.getCourseName());
+        holder.tvCredit.setText("" + course.getCredit());
+        holder.tvStartDate.setText(course.getStartDate());
+        holder.tvEndDate.setText(course.getEndDate());
+        holder.tvSchedule.setText(course.getSchedule());
+        holder.tvInstructor.setText(course.getInstructor());
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, CourseDetailActivity.class);
-            intent.putExtra("className", course.getClassName());
-            intent.putExtra("theoryTime", course.getTheoryTime());
-            intent.putExtra("practiceTime", course.getPracticeTime());
+            intent.putExtra("courseId", course.getCourseId());
             context.startActivity(intent);
         });
     }
@@ -56,14 +57,17 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     }
 
     public static class CourseViewHolder extends RecyclerView.ViewHolder {
-        TextView tvClassID, tvClassName, tvTheory, tvPractice;
+        TextView tvCourseId, tvCourseName, tvCredit, tvStartDate, tvEndDate, tvSchedule, tvInstructor;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvClassID = itemView.findViewById(R.id.tvClassID);
-            tvClassName = itemView.findViewById(R.id.tvClassName);
-            tvTheory = itemView.findViewById(R.id.tvTheory);
-            tvPractice = itemView.findViewById(R.id.tvPractice);
+            tvCourseId = itemView.findViewById(R.id.tv_course_id);
+            tvCourseName = itemView.findViewById(R.id.tv_course_name);
+            tvCredit = itemView.findViewById(R.id.tv_credit);
+            tvStartDate = itemView.findViewById(R.id.tv_start_date);
+            tvEndDate = itemView.findViewById(R.id.tv_end_date);
+            tvSchedule = itemView.findViewById(R.id.tv_schedule);
+            tvInstructor = itemView.findViewById(R.id.tv_instructor);
         }
     }
 }

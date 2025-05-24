@@ -1,41 +1,37 @@
 package com.example.nt118.UI;
 
 public class Course {
-    private String classID;
-    private String className;
-    private String theoryDay;
-    private String theoryStart;
-    private String theoryEnd;
-    private String practiceDay;
-    private String practiceStart;
-    private String practiceEnd;
+    private String courseId;
+    private String courseName;
+    private int credit;
+    private String startDate;
+    private String endDate;
+    private String schedule;
+    private String instructor;
 
-    public Course(String classID, String className,
-                  String theoryDay, String theoryStart, String theoryEnd,
-                  String practiceDay, String practiceStart, String practiceEnd) {
-        this.classID = classID;
-        this.className = className;
-        this.theoryDay = theoryDay;
-        this.theoryStart = theoryStart;
-        this.theoryEnd = theoryEnd;
-        this.practiceDay = practiceDay;
-        this.practiceStart = practiceStart;
-        this.practiceEnd = practiceEnd;
+    public Course(String courseId, String courseName,
+                  int credit, String startDate, String endDate,
+                  String schedule, String instructor) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.credit = credit;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.schedule = schedule;
+        this.instructor = instructor;
     }
 
-    public  String getClassID() {return classID;}
+    public  String getCourseId() { return courseId; }
 
-    public String getClassName() { return className; }
+    public String getCourseName() { return courseName; }
 
-    public String getTheoryTime() {
-        return (theoryDay.isEmpty() || theoryStart.isEmpty() || theoryEnd.isEmpty())
-                ? "..."
-                : theoryDay + " (" + theoryStart + " - " + theoryEnd + ")";
-    }
+    public int getCredit() { return credit; }
 
-    public String getPracticeTime() {
-        return (practiceDay.isEmpty() || practiceStart.isEmpty() || practiceEnd.isEmpty())
-                ? "..."
-                : practiceDay + " (" + practiceStart + " - " + practiceEnd + ")";
-    }
+    public String getStartDate() { return startDate; }
+
+    public String getEndDate() { return endDate; }
+
+    public String getSchedule() { return schedule; }
+
+    public String getInstructor() { return instructor; }
 }

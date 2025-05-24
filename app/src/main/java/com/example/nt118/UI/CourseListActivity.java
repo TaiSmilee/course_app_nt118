@@ -1,15 +1,19 @@
 package com.example.nt118.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nt118.API.CourseApi;
+import com.example.nt118.API.RetrofitClient;
 import com.example.nt118.UI.Deadline.DeadlineActivity;
 import com.example.nt118.R;
 import com.example.nt118.UI.grades.GradeActivity;
@@ -17,6 +21,10 @@ import com.example.nt118.UI.homecourse.HomeCourseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CourseListActivity extends AppCompatActivity {
 
@@ -49,11 +57,6 @@ public class CourseListActivity extends AppCompatActivity {
         // Dữ liệu mẫu
         courseList = new ArrayList<>();
 
-        // Thêm một số dữ liệu mẫu
-        courseList.add(new Course("NT108","Lập trình ứng dụng di động", "Thứ 2", "08:00", "10:00", "Thứ 5", "14:00", "16:00"));
-        courseList.add(new Course("IT001", "Nhập môn lập trình","Thứ 3", "09:00", "11:00", "", "", ""));
-        courseList.add(new Course("IT003", "Cấu trúc dữ liệu và giải thuật", "", "", "", "Thứ 7", "13:0", "15:00"));
-        courseList.add(new Course("IT002", "Lập trình hướng đối tượng", "", "", "", "", "", ""));
 
         // Cập nhật số lượng
         //tvCourseCount.setText("Tổng số khóa học: " + courseList.size());
@@ -62,6 +65,35 @@ public class CourseListActivity extends AppCompatActivity {
         recyclerView.setAdapter(courseAdapter);
 
         setupBottomBarNavigation();
+        fetchCourses();
+    }
+
+    private void fetchCourses() {
+        CourseApi courseApi = RetrofitClient.getInstance().createService(CourseApi.class);
+
+        // Nếu studentId từ SharedPreferences:
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String studentId = sharedPreferences.getString("studentId", null); // fallback nếu không có
+
+        Call<List<Course>> call = courseApi.getCoursesByStudentId(studentId);
+
+        call.enqueue(new Callback<List<Course>>() {
+            @Override
+            public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    courseList.clear();
+                    courseList.addAll(response.body());
+                    courseAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(CourseListActivity.this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Course>> call, Throwable t) {
+                Toast.makeText(CourseListActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setupBottomBarNavigation() {
