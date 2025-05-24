@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.nt118.api.RetrofitClient;
+import com.example.nt118.API.RetrofitClient;
 import com.example.nt118.Model.LoginRequest;
 import com.example.nt118.Model.LoginResponse;
 import com.example.nt118.UI.MainActivity;
@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                             if (response.isSuccessful() && response.body() != null) {
                                 LoginResponse loginResponse = response.body();
-                                if (loginResponse.isStatus()) {
+                                if (loginResponse.isSuccess()) {
                                     // Lưu token và thông tin người dùng
                                     SharedPreferences prefs = getSharedPreferences("APP_PREF", MODE_PRIVATE);
                                     SharedPreferences.Editor editor = prefs.edit();

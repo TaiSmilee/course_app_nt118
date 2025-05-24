@@ -19,7 +19,7 @@ import com.example.nt118.UI.Tuition.TuitionActivity;
 import com.example.nt118.UI.Attendance.AttendanceActivity;
 import com.example.nt118.UI.grades.GradeActivity;
 import com.example.nt118.UI.homecourse.HomeCourseActivity;
-import com.example.nt118.api.RetrofitClient;
+import com.example.nt118.API.RetrofitClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -96,28 +96,43 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updateUI(StudentProfileResponse profile) {
-        // Load avatar
+        // Load avatar with better error handling
         if (profile.getAvatarUrl() != null && !profile.getAvatarUrl().isEmpty()) {
-            Glide.with(this)
+            try {
+                Glide.with(this)
                     .load(profile.getAvatarUrl())
                     .placeholder(R.drawable.default_avatar)
                     .error(R.drawable.default_avatar)
+                    .circleCrop() // Make the image circular
                     .into(ivAvatar);
+            } catch (Exception e) {
+                // If there's any error loading the image, set the default avatar
+                ivAvatar.setImageResource(R.drawable.default_avatar);
+            }
+        } else {
+            // If no avatar URL is provided, set the default avatar
+            ivAvatar.setImageResource(R.drawable.default_avatar);
         }
 
-        // Update text views
-        tvName.setText(profile.getName());
-        tvStudentId.setText(profile.getStudentId());
-        tvEmail.setText(profile.getEmail());
-        tvClass.setText(profile.getClassName());
-        tvDob.setText(profile.getDateOfBirth());
+        // Update text views with null checks
+        tvName.setText(profile.getName() != null ? profile.getName() : "N/A");
+        tvStudentId.setText(profile.getStudentId() != null ? profile.getStudentId() : "N/A");
+        tvEmail.setText(profile.getEmail() != null ? profile.getEmail() : "N/A");
+        tvClass.setText(profile.getClassName() != null ? profile.getClassName() : "N/A");
+        tvDob.setText(profile.getDateOfBirth() != null ? profile.getDateOfBirth() : "N/A");
 
-        // Update statistics
+        // Update statistics with null checks
         if (profile.getStatistics() != null) {
             tvTotalCourses.setText(String.valueOf(profile.getStatistics().getTotalCourses()));
             tvTotalAttendance.setText(String.valueOf(profile.getStatistics().getTotalAttendance()));
             tvTotalGrades.setText(String.valueOf(profile.getStatistics().getTotalGrades()));
             tvTuitionBalance.setText(String.format("%,.0f VNĐ", profile.getStatistics().getTuitionBalance()));
+        } else {
+            // Set default values if statistics is null
+            tvTotalCourses.setText("0");
+            tvTotalAttendance.setText("0");
+            tvTotalGrades.setText("0");
+            tvTuitionBalance.setText("0 VNĐ");
         }
     }
 
