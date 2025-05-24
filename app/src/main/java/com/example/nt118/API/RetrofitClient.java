@@ -1,4 +1,6 @@
-package com.example.nt118.API;
+package com.example.nt118.api;
+
+import com.example.nt118.api.AuthApi;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -31,7 +33,7 @@ public class RetrofitClient {
         return instance;
     }
 
-    public AuthAPI getAuthApi() {
-        return retrofit.create(AuthAPI.class);
+    public AuthApi getAuthApi() {
+        return retrofit.create(AuthApi.class);
     }
 }
