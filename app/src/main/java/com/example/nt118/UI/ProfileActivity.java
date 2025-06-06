@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.content.Intent;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,12 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.nt118.UI.Deadline.DeadlineActivity;
 import com.example.nt118.Model.StudentProfileResponse;
+import com.example.nt118.Model.StudentStatistics;
 import com.example.nt118.R;
 import com.example.nt118.UI.Tuition.TuitionActivity;
 import com.example.nt118.UI.Attendance.AttendanceActivity;
 import com.example.nt118.UI.grades.GradeActivity;
 import com.example.nt118.UI.homecourse.HomeCourseActivity;
-import com.example.nt118.API.RetrofitClient;
+import com.example.nt118.api.RetrofitClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +32,9 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView ivAvatar;
     private TextView tvName, tvStudentId, tvEmail, tvClass, tvDob;
     private TextView tvTotalCourses, tvTotalAttendance, tvTotalGrades, tvTuitionBalance;
+    private LinearLayout contentStatistics;
+    private ImageView ivExpandStatistics;
+    private boolean isStatisticsExpanded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,33 @@ public class ProfileActivity extends AppCompatActivity {
         tvTotalAttendance = findViewById(R.id.tvTotalAttendance);
         tvTotalGrades = findViewById(R.id.tvTotalGrades);
         tvTuitionBalance = findViewById(R.id.tvTuitionBalance);
+
+        // Statistics
+        contentStatistics = findViewById(R.id.contentStatistics);
+        ivExpandStatistics = findViewById(R.id.ivExpandStatistics);
+
+        // Set up expand/collapse animation for statistics
+        View headerStatistics = findViewById(R.id.headerStatistics);
+        headerStatistics.setOnClickListener(v -> toggleStatisticsExpansion());
+    }
+
+    private void toggleStatisticsExpansion() {
+        isStatisticsExpanded = !isStatisticsExpanded;
+        
+        // Rotate arrow icon
+        float startRotation = isStatisticsExpanded ? 0 : 180;
+        float endRotation = isStatisticsExpanded ? 180 : 0;
+        RotateAnimation rotateAnimation = new RotateAnimation(
+            startRotation, endRotation,
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f
+        );
+        rotateAnimation.setDuration(300);
+        rotateAnimation.setFillAfter(true);
+        ivExpandStatistics.startAnimation(rotateAnimation);
+
+        // Show/hide content with animation
+        contentStatistics.setVisibility(isStatisticsExpanded ? View.VISIBLE : View.GONE);
     }
 
     private void loadStudentProfile() {
@@ -72,11 +105,11 @@ public class ProfileActivity extends AppCompatActivity {
                     public void onResponse(Call<StudentProfileResponse> call, Response<StudentProfileResponse> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             StudentProfileResponse profile = response.body();
-                            if (profile.isStatus()) {
-                                updateUI(profile);
+                            if ("success".equals(profile.getStatus())) {
+                                updateUI(profile.getData());
                             } else {
                                 Toast.makeText(ProfileActivity.this, 
-                                        profile.getMessage(), 
+                                        "Không thể tải thông tin", 
                                         Toast.LENGTH_SHORT).show();
                             }
                         } else {
@@ -95,12 +128,24 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateUI(StudentProfileResponse profile) {
+    private String formatTuitionBalance(double amount) {
+        if (amount >= 1000000000) { // Tỷ
+            return String.format("%.1f tỷ VNĐ", amount / 1000000000);
+        } else if (amount >= 1000000) { // Triệu
+            return String.format("%.1f triệu VNĐ", amount / 1000000);
+        } else if (amount >= 1000) { // Nghìn
+            return String.format("%.1f nghìn VNĐ", amount / 1000);
+        } else {
+            return String.format("%.0f VNĐ", amount);
+        }
+    }
+
+    private void updateUI(StudentProfileResponse.StudentData data) {
         // Load avatar with better error handling
-        if (profile.getAvatarUrl() != null && !profile.getAvatarUrl().isEmpty()) {
+        if (data.getAvatarUrl() != null && !data.getAvatarUrl().isEmpty()) {
             try {
                 Glide.with(this)
-                    .load(profile.getAvatarUrl())
+                    .load(data.getAvatarUrl())
                     .placeholder(R.drawable.default_avatar)
                     .error(R.drawable.default_avatar)
                     .circleCrop() // Make the image circular
@@ -115,18 +160,19 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         // Update text views with null checks
-        tvName.setText(profile.getName() != null ? profile.getName() : "N/A");
-        tvStudentId.setText(profile.getStudentId() != null ? profile.getStudentId() : "N/A");
-        tvEmail.setText(profile.getEmail() != null ? profile.getEmail() : "N/A");
-        tvClass.setText(profile.getClassName() != null ? profile.getClassName() : "N/A");
-        tvDob.setText(profile.getDateOfBirth() != null ? profile.getDateOfBirth() : "N/A");
+        tvName.setText(data.getName() != null ? data.getName() : "N/A");
+        tvStudentId.setText(data.getStudentId() != null ? data.getStudentId() : "N/A");
+        tvEmail.setText(data.getEmail() != null ? data.getEmail() : "N/A");
+        tvClass.setText(data.getClassName() != null ? data.getClassName() : "N/A");
+        tvDob.setText(data.getDateOfBirth() != null ? data.getDateOfBirth() : "N/A");
 
         // Update statistics with null checks
-        if (profile.getStatistics() != null) {
-            tvTotalCourses.setText(String.valueOf(profile.getStatistics().getTotalCourses()));
-            tvTotalAttendance.setText(String.valueOf(profile.getStatistics().getTotalAttendance()));
-            tvTotalGrades.setText(String.valueOf(profile.getStatistics().getTotalGrades()));
-            tvTuitionBalance.setText(String.format("%,.0f VNĐ", profile.getStatistics().getTuitionBalance()));
+        if (data.getStatistics() != null) {
+            StudentStatistics stats = data.getStatistics();
+            tvTotalCourses.setText(String.valueOf(stats.getTotalCourses()));
+            tvTotalAttendance.setText(String.valueOf(stats.getTotalAttendance()));
+            tvTotalGrades.setText(String.valueOf(stats.getTotalGrades()));
+            tvTuitionBalance.setText(formatTuitionBalance(stats.getTuitionBalance()));
         } else {
             // Set default values if statistics is null
             tvTotalCourses.setText("0");

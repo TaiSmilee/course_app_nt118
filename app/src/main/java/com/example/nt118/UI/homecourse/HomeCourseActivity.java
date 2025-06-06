@@ -1,120 +1,231 @@
 package com.example.nt118.UI.homecourse;
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.nt118.UI.Deadline.DeadlineActivity;
 import com.example.nt118.UI.grades.GradeActivity;
 import com.example.nt118.UI.ProfileActivity;
 import com.example.nt118.R;
+import com.example.nt118.api.RetrofitClient;
+import com.example.nt118.api.models.schedule.ScheduleItem;
+import com.example.nt118.api.models.schedule.ScheduleResponse;
 import com.google.android.material.button.MaterialButton;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-public class HomeCourseActivity extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    private MaterialButton[] dayButtons;
-    private int selectedDayIndex = 1; // Default to day 07 (index 1)
+public class HomeCourseActivity extends AppCompatActivity implements CalendarAdapter.OnDateClickListener {
+    private static final String TAG = "HomeCourseActivity";
+    private RecyclerView calendarGrid;
     private RecyclerView rvClassList;
+    private CalendarAdapter calendarAdapter;
     private ClassAdapter classAdapter;
     private List<ClassModel> classList = new ArrayList<>();
+    private Calendar currentDate;
+    private Date selectedDate;
+    private TextView tvMonth, tvYear;
+    private SimpleDateFormat monthFormat;
+    private SimpleDateFormat yearFormat;
+    private SimpleDateFormat apiDateFormat;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private String studentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_course);
 
-        // Initialize day buttons (MaterialButton instead of TextView)
-        dayButtons = new MaterialButton[]{
-                findViewById(R.id.day06),
-                findViewById(R.id.day07),
-                findViewById(R.id.day08),
-                findViewById(R.id.day09),
-                findViewById(R.id.day10),
-                findViewById(R.id.day11),
-                findViewById(R.id.day12)
-        };
+        // Get student ID from SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("APP_PREF", MODE_PRIVATE);
+        studentId = prefs.getString("STUDENT_ID", "");
 
-        // Setup RecyclerView
+        // Initialize date formats
+        monthFormat = new SimpleDateFormat("MMMM", new Locale("vi", "VN"));
+        yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
+        apiDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        
+        // Initialize current date
+        currentDate = Calendar.getInstance();
+        selectedDate = currentDate.getTime();
+
+        // Initialize views
+        tvMonth = findViewById(R.id.tvMonth);
+        tvYear = findViewById(R.id.tvYear);
+        calendarGrid = findViewById(R.id.calendarGrid);
         rvClassList = findViewById(R.id.rvClassList);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+
+        // Setup calendar grid
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 7, GridLayoutManager.VERTICAL, false);
+        calendarGrid.setLayoutManager(gridLayoutManager);
+        updateCalendar();
+
+        // Setup class list
         rvClassList.setLayoutManager(new LinearLayoutManager(this));
-        classAdapter = new ClassAdapter(classList, this); // Pass context instead of listener
+        classAdapter = new ClassAdapter(classList, this);
         rvClassList.setAdapter(classAdapter);
 
-        // Set click listeners for days
-        for (int i = 0; i < dayButtons.length; i++) {
-            final int index = i;
-            dayButtons[i].setOnClickListener(v -> selectDay(index));
-        }
+        // Setup navigation buttons
+        MaterialButton btnPrevWeek = findViewById(R.id.btnPrevWeek);
+        MaterialButton btnNextWeek = findViewById(R.id.btnNextWeek);
+        btnPrevWeek.setOnClickListener(v -> navigateWeek(-1));
+        btnNextWeek.setOnClickListener(v -> navigateWeek(1));
 
-        // Initial load of day 7 classes
-        updateClassInfo(selectedDayIndex);
+        // Setup date picker
+        View datePickerTrigger = findViewById(R.id.monthYearPicker);
+        datePickerTrigger.setOnClickListener(v -> showDatePicker());
+
+        // Setup swipe refresh
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            loadScheduleData(selectedDate);
+        });
+
+        // Initial load of classes
+        loadScheduleData(selectedDate);
 
         setupBottomBarNavigation();
     }
 
-    private void selectDay(int index) {
-        // Reset all buttons to default state
-        for (MaterialButton button : dayButtons) {
-            button.setBackgroundTintList(getResources().getColorStateList(android.R.color.transparent));
-            button.setTextColor(getResources().getColor(R.color.button_text_color));
-            button.setStrokeWidth(0);
+    private void updateCalendar() {
+        // Update month/year display
+        tvMonth.setText(monthFormat.format(currentDate.getTime()));
+        tvYear.setText(yearFormat.format(currentDate.getTime()));
+
+        // Get the days for the current week
+        List<Date> days = getDaysInWeek();
+        
+        // Log for debugging
+        Log.d(TAG, "Number of days: " + days.size());
+        for (Date date : days) {
+            Log.d(TAG, "Day: " + apiDateFormat.format(date));
         }
 
-        // Set new selected day
-        selectedDayIndex = index;
-
-        // Apply styling to selected button
-        MaterialButton selectedButton = dayButtons[selectedDayIndex];
-        selectedButton.setBackgroundTintList(getResources().getColorStateList(R.color.primary_blue));
-        selectedButton.setTextColor(getResources().getColor(android.R.color.white));
-
-        // Special case for day 12
-        if (index == 6) { // Day 12
-            selectedButton.setStrokeColor(getResources().getColorStateList(R.color.primary_blue));
-            selectedButton.setStrokeWidth(2);
-            selectedButton.setBackgroundTintList(getResources().getColorStateList(android.R.color.transparent));
-            selectedButton.setTextColor(getResources().getColor(R.color.primary_blue));
-        }
-
-        // Update class list for the selected day
-        updateClassInfo(index);
+        // Update calendar adapter
+        calendarAdapter = new CalendarAdapter(days, selectedDate, this);
+        calendarGrid.setAdapter(calendarAdapter);
+        calendarAdapter.notifyDataSetChanged();
     }
 
-    private void updateClassInfo(int dayIndex) {
-        // Clear previous class list
-        classList.clear();
+    private List<Date> getDaysInWeek() {
+        List<Date> days = new ArrayList<>();
+        Calendar calendar = (Calendar) currentDate.clone();
+        
+        // Move to the start of the week (Sunday)
+        while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+        }
+        
+        // Add all days of the week
+        for (int i = 0; i < 7; i++) {
+            days.add(calendar.getTime());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        
+        return days;
+    }
 
-        // Based on the day index, load different classes
-        // Cần phải cập nhật để tạo đúng ClassModel theo constructor hiện tại
-        switch (dayIndex) {
-            case 0: // Sunday (06)
-                // No classes on Sunday
-                break;
-            case 1: // Monday (07)
-                classList.add(new ClassModel("08:00", "10:00", "Lập trình ứng dụng di động", "C201"));
-                classList.add(new ClassModel("10:15", "12:15", "Đồ họa máy tính", "H1.02"));
-                break;
-            case 2: // Tuesday (08)
-                classList.add(new ClassModel("07:30", "09:30", "Cấu trúc dữ liệu và giải thuật", "B1.01"));
-                classList.add(new ClassModel("13:00", "16:00", "Nhập môn lập trình", "C114"));
-                break;
-            case 3: // Wednesday (09)
-                classList.add(new ClassModel("07:30", "09:30", "Lập trình hướng đối tượng", "A1.01"));
-                classList.add(new ClassModel("13:00", "15:30", "Nhập môn mạng máy tính", "B4.05"));
-                break;
-            case 4: // Thursday (10)
-            case 5: // Friday (11)
-            case 6: // Saturday (12)
-                classList.add(new ClassModel("07:30", "09:30", "An toàn mạng", "H5.01"));
-                break;
+    private void navigateWeek(int direction) {
+        currentDate.add(Calendar.WEEK_OF_YEAR, direction);
+        updateCalendar();
+    }
+
+    private void showDatePicker() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+            this,
+            (view, year, month, dayOfMonth) -> {
+                currentDate.set(year, month, dayOfMonth);
+                selectedDate = currentDate.getTime();
+                updateCalendar();
+                loadScheduleData(selectedDate);
+            },
+            currentDate.get(Calendar.YEAR),
+            currentDate.get(Calendar.MONTH),
+            currentDate.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void onDateClick(Date date) {
+        selectedDate = date;
+        updateCalendar();
+        loadScheduleData(date);
+    }
+
+    private void loadScheduleData(Date date) {
+        if (studentId.isEmpty()) {
+            Toast.makeText(this, "Vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        // Notify adapter that data has changed
+        String formattedDate = apiDateFormat.format(date);
+        
+        RetrofitClient.getInstance()
+            .getScheduleApi()
+            .getScheduleByDate(studentId, formattedDate)
+            .enqueue(new Callback<ScheduleResponse>() {
+                @Override
+                public void onResponse(Call<ScheduleResponse> call, Response<ScheduleResponse> response) {
+                    swipeRefreshLayout.setRefreshing(false);
+                    
+                    if (response.isSuccessful() && response.body() != null) {
+                        ScheduleResponse scheduleResponse = response.body();
+                        if (scheduleResponse.isSuccess()) {
+                            updateScheduleUI(scheduleResponse.getData().getSchedule());
+                        } else {
+                            Toast.makeText(HomeCourseActivity.this, 
+                                scheduleResponse.getMessage(), 
+                                Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(HomeCourseActivity.this,
+                            "Không thể tải lịch học. Vui lòng thử lại!",
+                            Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ScheduleResponse> call, Throwable t) {
+                    swipeRefreshLayout.setRefreshing(false);
+                    Log.e(TAG, "API call failed", t);
+                    Toast.makeText(HomeCourseActivity.this,
+                        "Lỗi kết nối: " + t.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+                }
+            });
+    }
+
+    private void updateScheduleUI(List<ScheduleItem> schedule) {
+        classList.clear();
+        for (ScheduleItem item : schedule) {
+            classList.add(new ClassModel(
+                item.getStartTime(),
+                item.getEndTime(),
+                item.getSubjectName(),
+                item.getRoom(),
+                item.getCourseId()
+            ));
+        }
         classAdapter.notifyDataSetChanged();
     }
 
@@ -140,7 +251,7 @@ public class HomeCourseActivity extends AppCompatActivity {
             });
 
             bottomBar.findViewById(R.id.btnHome).setOnClickListener(v -> {
-                // Đã ở màn hình Home rồi, không cần làm gì
+                // Already on home screen
             });
         }
     }

@@ -6,13 +6,15 @@ public class CourseGradeModel {
     private int credits;
     private double numericGrade;
     private String letterGrade;
+    private String lecturer;
 
-    public CourseGradeModel(String courseCode, String courseName, int credits, double numericGrade, String letterGrade) {
+    public CourseGradeModel(String courseCode, String courseName, int credits, double numericGrade, String letterGrade, String lecturer) {
         this.courseCode = courseCode;
         this.courseName = courseName;
         this.credits = credits;
         this.numericGrade = numericGrade;
         this.letterGrade = letterGrade;
+        this.lecturer = lecturer;
     }
 
     public String getCourseCode() {
@@ -33,6 +35,10 @@ public class CourseGradeModel {
 
     public String getLetterGrade() {
         return letterGrade;
+    }
+
+    public String getLecturer() {
+        return lecturer;
     }
 
     public String getGradeColor() {

@@ -41,13 +41,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, CourseDetailActivity.class);
-
-            // Gửi dữ liệu qua Intent
-            intent.putExtra("subjectName", item.getSubjectName());
-            intent.putExtra("startTime", item.getStartTime());
-            intent.putExtra("endTime", item.getEndTime());
-            intent.putExtra("room", item.getRoom());
-
+            intent.putExtra("courseId", item.getCourseId());
             context.startActivity(intent);
         });
     }

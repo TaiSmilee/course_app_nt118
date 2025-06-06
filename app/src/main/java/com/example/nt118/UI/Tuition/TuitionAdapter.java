@@ -29,7 +29,33 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.TuitionV
     public void onBindViewHolder(@NonNull TuitionViewHolder holder, int position) {
         Tuition tuition = tuitionList.get(position);
         holder.textClassID.setText(tuition.getClassID());
-        holder.textCredit.setText("" + tuition.getCredit());
+        holder.textCredit.setText(String.valueOf(tuition.getCredit()));
+        holder.textSubjectName.setText(tuition.getSubjectName());
+        
+        // Set payment date and method if available
+        if (tuition.getPaymentDate() != null && !tuition.getPaymentDate().isEmpty()) {
+            holder.textPaymentDate.setText("Ngày thanh toán: " + tuition.getPaymentDate());
+            holder.textPaymentMethod.setText("Phương thức: " + tuition.getPaymentMethod());
+        } else {
+            holder.textPaymentDate.setText("Chưa thanh toán");
+            holder.textPaymentMethod.setText("");
+        }
+        
+        // Set status indicator color
+        switch (tuition.getStatus()) {
+            case "PAID":
+                holder.statusIndicator.setBackgroundResource(R.drawable.status_paid);
+                break;
+            case "UNPAID":
+                holder.statusIndicator.setBackgroundResource(R.drawable.status_unpaid);
+                break;
+            case "PARTIAL":
+                holder.statusIndicator.setBackgroundResource(R.drawable.status_partial);
+                break;
+            default:
+                holder.statusIndicator.setBackgroundResource(R.drawable.status_unpaid);
+                break;
+        }
     }
 
     @Override
@@ -38,12 +64,17 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.TuitionV
     }
 
     public static class TuitionViewHolder extends RecyclerView.ViewHolder {
-        TextView textClassID, textCredit;
+        TextView textClassID, textCredit, textSubjectName, textPaymentDate, textPaymentMethod;
+        View statusIndicator;
 
         public TuitionViewHolder(@NonNull View itemView) {
             super(itemView);
             textClassID = itemView.findViewById(R.id.tvClassID);
             textCredit = itemView.findViewById(R.id.tvCredit);
+            textSubjectName = itemView.findViewById(R.id.tvSubjectName);
+            textPaymentDate = itemView.findViewById(R.id.tvPaymentDate);
+            textPaymentMethod = itemView.findViewById(R.id.tvPaymentMethod);
+            statusIndicator = itemView.findViewById(R.id.statusIndicator);
         }
     }
 }

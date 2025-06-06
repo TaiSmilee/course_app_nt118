@@ -1,10 +1,22 @@
 package com.example.nt118.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class StudentStatistics {
+    @SerializedName("totalCourses")
     private int totalCourses;
+
+    @SerializedName("totalAttendance")
     private int totalAttendance;
+
+    @SerializedName("totalGrades")
     private int totalGrades;
+
+    @SerializedName("tuitionBalance")
     private double tuitionBalance;
+
+    @SerializedName("gradeDistribution")
+    private GradeDistribution gradeDistribution;
 
     // Getters and Setters
     public int getTotalCourses() { return totalCourses; }
@@ -19,6 +31,10 @@ public class StudentStatistics {
     public double getTuitionBalance() { return tuitionBalance; }
     public void setTuitionBalance(double tuitionBalance) { this.tuitionBalance = tuitionBalance; }
 
+    public GradeDistribution getGradeDistribution() {
+        return gradeDistribution;
+    }
+
     @Override
     public String toString() {
         return "StudentStatistics{" +
@@ -27,5 +43,42 @@ public class StudentStatistics {
                 ", totalGrades=" + totalGrades +
                 ", tuitionBalance=" + tuitionBalance +
                 '}';
+    }
+
+    public static class GradeDistribution {
+        @SerializedName("gradeA")
+        private int gradeA;
+
+        @SerializedName("gradeB")
+        private int gradeB;
+
+        @SerializedName("gradeC")
+        private int gradeC;
+
+        @SerializedName("gradeD")
+        private int gradeD;
+
+        @SerializedName("gpa")
+        private double gpa;
+
+        public int getGradeA() {
+            return gradeA;
+        }
+
+        public int getGradeB() {
+            return gradeB;
+        }
+
+        public int getGradeC() {
+            return gradeC;
+        }
+
+        public int getGradeD() {
+            return gradeD;
+        }
+
+        public double getGpa() {
+            return gpa;
+        }
     }
 } 

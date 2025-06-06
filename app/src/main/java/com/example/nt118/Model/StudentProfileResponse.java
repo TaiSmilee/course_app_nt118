@@ -1,56 +1,70 @@
 package com.example.nt118.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class StudentProfileResponse {
-    private boolean status;
-    private String message;
-    private String studentId;
-    private String name;
-    private String email;
-    private String dateOfBirth;
-    private String className;
-    private String avatarUrl;
-    private StudentStatistics statistics;
+    @SerializedName("status")
+    private String status;
 
-    // Getters and Setters
-    public boolean isStatus() { return status; }
-    public void setStatus(boolean status) { this.status = status; }
+    @SerializedName("data")
+    private StudentData data;
 
-    public String getMessage() { return message; }
-    public void setMessage(String message) { this.message = message; }
+    public String getStatus() {
+        return status;
+    }
 
-    public String getStudentId() { return studentId; }
-    public void setStudentId(String studentId) { this.studentId = studentId; }
+    public StudentData getData() {
+        return data;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public static class StudentData {
+        @SerializedName("studentId")
+        private String studentId;
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+        @SerializedName("name")
+        private String name;
 
-    public String getDateOfBirth() { return dateOfBirth; }
-    public void setDateOfBirth(String dateOfBirth) { this.dateOfBirth = dateOfBirth; }
+        @SerializedName("email")
+        private String email;
 
-    public String getClassName() { return className; }
-    public void setClassName(String className) { this.className = className; }
+        @SerializedName("className")
+        private String className;
 
-    public String getAvatarUrl() { return avatarUrl; }
-    public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
+        @SerializedName("dateOfBirth")
+        private String dateOfBirth;
 
-    public StudentStatistics getStatistics() { return statistics; }
-    public void setStatistics(StudentStatistics statistics) { this.statistics = statistics; }
+        @SerializedName("avatarUrl")
+        private String avatarUrl;
 
-    @Override
-    public String toString() {
-        return "StudentProfileResponse{" +
-                "status=" + status +
-                ", message='" + message + '\'' +
-                ", studentId='" + studentId + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", dateOfBirth='" + dateOfBirth + '\'' +
-                ", className='" + className + '\'' +
-                ", avatarUrl='" + avatarUrl + '\'' +
-                ", statistics=" + statistics +
-                '}';
+        @SerializedName("statistics")
+        private StudentStatistics statistics;
+
+        public String getStudentId() {
+            return studentId;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getClassName() {
+            return className;
+        }
+
+        public String getDateOfBirth() {
+            return dateOfBirth;
+        }
+
+        public String getAvatarUrl() {
+            return avatarUrl;
+        }
+
+        public StudentStatistics getStatistics() {
+            return statistics;
+        }
     }
 } 

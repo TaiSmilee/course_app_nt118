@@ -44,6 +44,7 @@ public class CourseGradeAdapter extends RecyclerView.Adapter<CourseGradeAdapter.
         holder.tvCredits.setText(String.valueOf(course.getCredits()) + " credits");
         holder.tvGrade.setText(course.getLetterGrade());
         holder.tvPoint.setText(String.format("%.1f", course.getNumericGrade()));
+        holder.tvLecturer.setText(course.getLecturer());
 
         // Set color based on grade
         int gradeColor = holder.itemView.getContext().getResources().getColor(android.R.color.black);

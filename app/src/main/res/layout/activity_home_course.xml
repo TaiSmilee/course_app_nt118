@@ -69,28 +69,64 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Month and Year Header with Navigation -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tvMonth"
+                <LinearLayout
+                    android:id="@+id/monthYearPicker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tháng 4"
-                    android:textColor="#1A237E"
-                    android:textSize="28sp"
-                    android:textStyle="bold" />
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:onClick="showDatePicker">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    <TextView
+                        android:id="@+id/tvMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tháng 4"
+                        android:textColor="#1A237E"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="2025"
+                        android:textColor="#666666"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/ic_calendar"
+                        app:tint="#666666" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPrevWeek"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentStart="true"
+                    app:icon="@drawable/ic_chevron_left"
+                    app:iconTint="#666666" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNextWeek"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:text="2025"
-                    android:textColor="#666666"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    app:icon="@drawable/ic_chevron_right"
+                    app:iconTint="#666666" />
             </RelativeLayout>
 
             <!-- Days of week -->
@@ -108,7 +144,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:paddingVertical="8dp"
-                    android:text="Sun"
+                    android:text="CN"
                     android:textColor="#666666"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -119,7 +155,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:paddingVertical="8dp"
-                    android:text="Mon"
+                    android:text="T2"
                     android:textColor="#666666"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -130,7 +166,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:paddingVertical="8dp"
-                    android:text="Tue"
+                    android:text="T3"
                     android:textColor="#666666"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -141,7 +177,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:paddingVertical="8dp"
-                    android:text="Wed"
+                    android:text="T4"
                     android:textColor="#666666"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -152,7 +188,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:paddingVertical="8dp"
-                    android:text="Thu"
+                    android:text="T5"
                     android:textColor="#666666"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -163,7 +199,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:paddingVertical="8dp"
-                    android:text="Fri"
+                    android:text="T6"
                     android:textColor="#666666"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -174,142 +210,22 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:paddingVertical="8dp"
-                    android:text="Sat"
+                    android:text="T7"
                     android:textColor="#666666"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Days numbers -->
-            <LinearLayout
-                android:id="@+id/daysNumbersLayout"
+            <!-- Days grid -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/calendarGrid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:weightSum="7">
+                android:layout_marginHorizontal="4dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/day06"
-                    style="@style/Widget.Material3.Button.UnelevatedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:insetLeft="4dp"
-                    android:insetTop="4dp"
-                    android:insetRight="4dp"
-                    android:insetBottom="4dp"
-                    android:text="13"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    app:backgroundTint="@android:color/transparent"
-                    app:cornerRadius="8dp"
-                    app:rippleColor="#400099FF" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/day07"
-                    style="@style/Widget.Material3.Button.UnelevatedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:insetLeft="4dp"
-                    android:insetTop="4dp"
-                    android:insetRight="4dp"
-                    android:insetBottom="4dp"
-                    android:text="14"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="#0099FF"
-                    app:cornerRadius="8dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/day08"
-                    style="@style/Widget.Material3.Button.UnelevatedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:insetLeft="4dp"
-                    android:insetTop="4dp"
-                    android:insetRight="4dp"
-                    android:insetBottom="4dp"
-                    android:text="15"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    app:backgroundTint="@android:color/transparent"
-                    app:cornerRadius="8dp"
-                    app:rippleColor="#400099FF" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/day09"
-                    style="@style/Widget.Material3.Button.UnelevatedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:insetLeft="4dp"
-                    android:insetTop="4dp"
-                    android:insetRight="4dp"
-                    android:insetBottom="4dp"
-                    android:text="16"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    app:backgroundTint="@android:color/transparent"
-                    app:cornerRadius="8dp"
-                    app:rippleColor="#400099FF" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/day10"
-                    style="@style/Widget.Material3.Button.UnelevatedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:insetLeft="4dp"
-                    android:insetTop="4dp"
-                    android:insetRight="4dp"
-                    android:insetBottom="4dp"
-                    android:text="17"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    app:backgroundTint="@android:color/transparent"
-                    app:cornerRadius="8dp"
-                    app:rippleColor="#400099FF" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/day11"
-                    style="@style/Widget.Material3.Button.UnelevatedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:insetLeft="4dp"
-                    android:insetTop="4dp"
-                    android:insetRight="4dp"
-                    android:insetBottom="4dp"
-                    android:text="18"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    app:backgroundTint="@android:color/transparent"
-                    app:cornerRadius="8dp"
-                    app:rippleColor="#400099FF" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/day12"
-                    style="@style/Widget.Material3.Button.UnelevatedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:insetLeft="4dp"
-                    android:insetTop="4dp"
-                    android:insetRight="4dp"
-                    android:insetBottom="4dp"
-                    android:text="19"
-                    android:textColor="#0099FF"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="@android:color/transparent"
-                    app:cornerRadius="8dp"
-                    app:strokeColor="#0099FF"
-                    app:strokeWidth="2dp" />
-            </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -325,14 +241,22 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvClassList"
+    <!-- SwipeRefreshLayout -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:padding="16dp" />
+        android:layout_weight="1">
+
+        <!-- RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvClassList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="16dp" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <!-- Bottom bar -->
     <include layout="@layout/bottom_bar"/>

@@ -1,4 +1,4 @@
-package com.example.nt118.API;
+package com.example.nt118.api;
 
 import com.example.nt118.Model.LoginRequest;
 import com.example.nt118.Model.LoginResponse;

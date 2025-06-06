@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nt118.API.CourseApi;
-import com.example.nt118.API.RetrofitClient;
+import com.example.nt118.api.CourseApi;
+import com.example.nt118.api.RetrofitClient;
 import com.example.nt118.UI.Deadline.DeadlineActivity;
 import com.example.nt118.R;
 import com.example.nt118.UI.grades.GradeActivity;
