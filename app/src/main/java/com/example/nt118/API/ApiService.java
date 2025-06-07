@@ -57,4 +57,10 @@ public interface ApiService {
         @Header("Authorization") String token,
         @Path("courseId") String courseId
     );
+
+    @GET("api/notifications/student/{studentId}")
+    Call<NotificationResponse> getNotifications(
+        @Header("Authorization") String token,
+        @Path("studentId") String studentId
+    );
 } 

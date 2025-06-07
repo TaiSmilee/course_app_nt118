@@ -35,7 +35,9 @@ import retrofit2.Response;
 public class DeadlineNotificationWorker extends Worker {
 
     private static final String TAG = "DeadlineNotificationWorker";
-    public static final String CHANNEL_ID = "deadline_channel";
+    public static final String CHANNEL_ID = "deadline_notification_channel";
+    public static final String CHANNEL_NAME = "Deadline Notifications";
+    public static final String CHANNEL_DESCRIPTION = "Notifications for upcoming deadlines";
     public static final int NOTIFICATION_ID = 1001;
 
     public DeadlineNotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -56,16 +58,11 @@ public class DeadlineNotificationWorker extends Worker {
             return Result.failure();
         }
 
-        // Create notification channel (safe to call multiple times)
         createNotificationChannel();
 
-        // Synchronously fetch data (WorkManager runs on a background thread)
-        try {
-            Response<DeadlineResponse> response = RetrofitClient.getInstance()
-                    .getApiService()
-                    .getDeadlines("Bearer " + token, studentId)
-                    .execute(); // Synchronous call
-
+        RetrofitClient.getApiService().getDeadlines("Bearer " + token, studentId).enqueue(new Callback<DeadlineResponse>() {
+            @Override
+            public void onResponse(Call<DeadlineResponse> call, Response<DeadlineResponse> response) {
             if (response.isSuccessful() && response.body() != null) {
                 DeadlineResponse deadlineResponse = response.body();
                 if (deadlineResponse.isSuccess()) {
@@ -74,28 +71,30 @@ public class DeadlineNotificationWorker extends Worker {
 
                     for (DeadlineItem deadline : deadlines) {
                         if (deadline.getDeadlineDate() != null) {
-                            long daysRemaining = calculateDaysRemaining(deadline.getDeadlineDate());
-                            // Notify if deadline is within 3 days and not yet submitted/graded
-                            if (daysRemaining >= 0 && daysRemaining <= 3 &&
+                                long minutesRemaining = calculateMinutesRemaining(deadline.getDeadlineDate());
+                                // Notify if deadline is within 24 hours and not yet submitted/graded
+                                if (minutesRemaining > 0 && minutesRemaining <= 24 * 60 &&
                                 !"SUBMITTED".equals(deadline.getStatus()) &&
                                 !"GRADED".equals(deadline.getStatus())) {
-                                sendNotification(deadline.getTitle(), daysRemaining);
+                                    sendNotification(deadline.getTitle(), minutesRemaining);
+                                }
                             }
                         }
+                    } else {
+                        Log.e(TAG, "API Error: " + deadlineResponse.getMessage());
                     }
-                    return Result.success();
                 } else {
-                    Log.e(TAG, "API Error: " + deadlineResponse.getMessage());
-                    return Result.failure();
-                }
-            } else {
                 Log.e(TAG, "Unsuccessful response: " + response.code() + " - " + response.message());
-                return Result.failure();
+                }
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Error fetching deadlines: " + e.getMessage(), e);
-            return Result.failure();
-        }
+
+            @Override
+            public void onFailure(Call<DeadlineResponse> call, Throwable t) {
+                Log.e(TAG, "Error fetching deadlines: " + t.getMessage(), t);
+            }
+        });
+
+        return Result.success();
     }
 
     private void createNotificationChannel() {
@@ -112,12 +111,26 @@ public class DeadlineNotificationWorker extends Worker {
         }
     }
 
-    private void sendNotification(String title, long daysRemaining) {
+    private void sendNotification(String title, long totalMinutesRemaining) {
         String contentText;
-        if (daysRemaining == 0) {
-            contentText = "Hạn chót là HÔM NAY!";
+        long days = totalMinutesRemaining / (24 * 60);
+        long hours = (totalMinutesRemaining % (24 * 60)) / 60;
+        long minutes = totalMinutesRemaining % 60;
+
+        if (days == 0) {
+            if (hours == 0) {
+                if (minutes <= 5) {
+                    contentText = "CẢNH BÁO: Deadline " + title + " sắp hết hạn trong " + minutes + " phút!";
+                } else {
+                    contentText = "Deadline " + title + " còn " + minutes + " phút nữa là tới hạn!";
+                }
+            } else {
+                contentText = "Deadline " + title + " còn " + hours + " giờ " + minutes + " phút nữa là tới hạn!";
+            }
+        } else if (days == 1) {
+            contentText = "Deadline " + title + " còn 1 ngày " + hours + " giờ nữa là tới hạn!";
         } else {
-            contentText = "Còn " + daysRemaining + " ngày nữa là tới hạn.";
+            contentText = "Deadline " + title + " còn " + days + " ngày " + hours + " giờ nữa là tới hạn!";
         }
 
         Intent intent = new Intent(getApplicationContext(), DeadlineActivity.class);
@@ -130,7 +143,7 @@ public class DeadlineNotificationWorker extends Worker {
         );
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_notification) // You'll need an appropriate icon
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
                 .setContentText(contentText)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -141,22 +154,12 @@ public class DeadlineNotificationWorker extends Worker {
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
-    private long calculateDaysRemaining(Date dueDate) {
-        Calendar today = Calendar.getInstance();
-        today.setTime(new Date());
-        today.set(Calendar.HOUR_OF_DAY, 0);
-        today.set(Calendar.MINUTE, 0);
-        today.set(Calendar.SECOND, 0);
-        today.set(Calendar.MILLISECOND, 0);
-
+    private long calculateMinutesRemaining(Date dueDate) {
+        Calendar now = Calendar.getInstance();
         Calendar dueCal = Calendar.getInstance();
         dueCal.setTime(dueDate);
-        dueCal.set(Calendar.HOUR_OF_DAY, 0);
-        dueCal.set(Calendar.MINUTE, 0);
-        dueCal.set(Calendar.SECOND, 0);
-        dueCal.set(Calendar.MILLISECOND, 0);
 
-        long diff = dueCal.getTimeInMillis() - today.getTimeInMillis();
-        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        long diff = dueCal.getTimeInMillis() - now.getTimeInMillis();
+        return TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
     }
 }

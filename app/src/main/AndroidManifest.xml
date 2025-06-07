@@ -59,6 +59,10 @@
         <activity
             android:name=".UI.Attendance.AttendanceDetailActivity"
             android:exported="false" />
+        <service
+            android:name=".Service.NotificationService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>
