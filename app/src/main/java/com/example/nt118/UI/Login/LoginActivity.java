@@ -8,6 +8,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.example.nt118.api.RetrofitClient;
 import com.example.nt118.Model.LoginRequest;
@@ -15,6 +18,8 @@ import com.example.nt118.Model.LoginResponse;
 import com.example.nt118.UI.MainActivity;
 import com.example.nt118.R;
 import com.example.nt118.UI.homecourse.HomeCourseActivity;
+import com.example.nt118.Worker.DeadlineNotificationWorker;
+import java.util.concurrent.TimeUnit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,6 +76,19 @@ public class LoginActivity extends AppCompatActivity {
                                     editor.putString("EMAIL", loginResponse.getEmail());
                                     editor.putString("ROLE", loginResponse.getRole());
                                     editor.apply();
+
+                                    // Schedule the deadline notification worker
+                                    PeriodicWorkRequest notificationWorkRequest = new PeriodicWorkRequest.Builder(
+                                            DeadlineNotificationWorker.class,
+                                            12, TimeUnit.HOURS // Run every 12 hours
+                                    )
+                                    .build();
+
+                                    WorkManager.getInstance(LoginActivity.this).enqueueUniquePeriodicWork(
+                                            "DeadlineNotificationWork",
+                                            ExistingPeriodicWorkPolicy.UPDATE, // Update existing work if any
+                                            notificationWorkRequest
+                                    );
 
                                     // Hiển thị thông báo thành công
                                     Toast.makeText(LoginActivity.this, 

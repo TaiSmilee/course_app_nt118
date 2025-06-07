@@ -18,7 +18,7 @@ import com.example.nt118.UI.ProfileActivity;
 import com.example.nt118.UI.grades.GradeActivity;
 import com.example.nt118.UI.homecourse.HomeCourseActivity;
 import com.example.nt118.api.RetrofitClient;
-import com.example.nt118.Model.Attendance.AttendanceResponse;
+import com.example.nt118.Model.Attendance.AttendanceDetailResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,43 +76,42 @@ public class AttendanceDetailActivity extends AppCompatActivity {
     private void loadAttendanceData() {
         RetrofitClient.getInstance()
                 .getAttendanceApi()
-                .getCourseAttendance(studentId, courseId)
-                .enqueue(new Callback<AttendanceResponse>() {
+                .getCourseAttendance(courseId, studentId)
+                .enqueue(new Callback<AttendanceDetailResponse>() {
                     @Override
-                    public void onResponse(Call<AttendanceResponse> call, Response<AttendanceResponse> response) {
+                    public void onResponse(Call<AttendanceDetailResponse> call, Response<AttendanceDetailResponse> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            AttendanceResponse attendanceResponse = response.body();
+                            AttendanceDetailResponse attendanceResponse = response.body();
                             if ("success".equals(attendanceResponse.getStatus())) {
-                                AttendanceResponse.AttendanceData data = attendanceResponse.getData();
-                                if (data != null && !data.getCourses().isEmpty()) {
-                                    AttendanceResponse.CourseAttendance course = data.getCourses().get(0);
-                                    
-                                    // Update summary
-                                    tvTotalSessions.setText(String.valueOf(course.getTotalSessions()));
-                                    tvAttendedSessions.setText(String.valueOf(course.getAttendedSessions()));
-                                    tvAttendanceRate.setText(String.format("%.1f%%", course.getAttendanceRate()));
-                                    
-                                    // Update sessions list
-                                    SessionAdapter adapter = new SessionAdapter(course.getSessions());
-                                    rvSessions.setAdapter(adapter);
-                                }
+                                AttendanceDetailResponse.AttendanceDetailData data = attendanceResponse.getData();
+                                
+                                // Update course info
+                                tvCourseName.setText(data.getCourseName());
+                                
+                                // Update summary
+                                tvTotalSessions.setText(String.valueOf(data.getTotalSessions()));
+                                tvAttendedSessions.setText(String.valueOf(data.getAttendedSessions()));
+                                tvAttendanceRate.setText(String.format("%.1f%%", data.getAttendanceRate()));
+                                
+                                // Update sessions list
+                                SessionAdapter adapter = new SessionAdapter(data.getSessions());
+                                rvSessions.setAdapter(adapter);
                             } else {
                                 Toast.makeText(AttendanceDetailActivity.this, 
-                                    "Lỗi: " + attendanceResponse.getStatus(), 
+                                    "Lỗi: " + attendanceResponse.getMessage(), 
                                     Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(AttendanceDetailActivity.this, 
-                                "Lỗi kết nối", 
+                            Toast.makeText(AttendanceDetailActivity.this,
+                                "Không thể tải dữ liệu điểm danh",
                                 Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<AttendanceResponse> call, Throwable t) {
-                        Log.e("AttendanceDetailActivity", "API call failed: " + t.getMessage(), t);
-                        Toast.makeText(AttendanceDetailActivity.this, 
-                            "Lỗi: " + t.getMessage(), 
+                    public void onFailure(Call<AttendanceDetailResponse> call, Throwable t) {
+                        Toast.makeText(AttendanceDetailActivity.this,
+                            "Lỗi kết nối: " + t.getMessage(),
                             Toast.LENGTH_SHORT).show();
                     }
                 });

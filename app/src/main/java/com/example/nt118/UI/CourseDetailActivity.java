@@ -1,5 +1,6 @@
 package com.example.nt118.UI;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nt118.UI.Deadline.DeadlineActivity;
@@ -21,18 +23,21 @@ import com.example.nt118.api.RetrofitClient;
 import com.example.nt118.Model.Deadline.DeadlineItem;
 import com.example.nt118.Model.Deadline.DeadlineResponse;
 import com.example.nt118.UI.CourseDetail.CourseDeadlineAdapter;
+import com.example.nt118.UI.CourseDetail.NotificationAdapter;
 import com.example.nt118.UI.Login.LoginActivity;
+import com.example.nt118.Model.CourseDetail.Notification;
+import com.example.nt118.api.models.notification.NotificationResponse;
 import com.google.android.material.tabs.TabLayout;
 import android.content.Intent;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import android.util.Log;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CourseDetailActivity extends AppCompatActivity {
+    private static final String TAG = "CourseDetailActivity";
     private ImageView btnBack;
     private ImageView btnStudentList;
     private TabLayout tabLayout;
@@ -40,6 +45,14 @@ public class CourseDetailActivity extends AppCompatActivity {
     private ListView deadlineList;
     private String studentId;
     private String courseId;
+    private CourseDeadlineAdapter deadlineAdapter;
+    private NotificationAdapter notificationAdapter;
+    private List<Notification> notifications;
+    private TextView tvNoNotifications;
+    
+    // Flags to track API completion
+    private boolean notificationLoaded = false;
+    private boolean deadlineLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +82,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         // Get courseId from intent
         courseId = getIntent().getStringExtra("courseId");
         if (courseId != null) {
-            loadDeadlines();
+            loadAllData();
         }
 
         setupBottomBarNavigation();
@@ -81,6 +94,16 @@ public class CourseDetailActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         notificationList = findViewById(R.id.notificationList);
         deadlineList = findViewById(R.id.deadlineList);
+        tvNoNotifications = findViewById(R.id.tvNoNotifications);
+        
+        // Initialize notifications
+        notifications = new ArrayList<>();
+        notificationAdapter = new NotificationAdapter(this, notifications);
+        notificationList.setAdapter(notificationAdapter);
+
+        // Initialize deadlines
+        deadlineAdapter = new CourseDeadlineAdapter(this, new ArrayList<>());
+        deadlineList.setAdapter(deadlineAdapter);
     }
 
     private void setupClickListeners() {
@@ -102,11 +125,19 @@ public class CourseDetailActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
+                    // Show notifications
                     notificationList.setVisibility(View.VISIBLE);
                     deadlineList.setVisibility(View.GONE);
+                    if (notifications.isEmpty()) {
+                        tvNoNotifications.setVisibility(View.VISIBLE);
+                    } else {
+                        tvNoNotifications.setVisibility(View.GONE);
+                    }
                 } else {
+                    // Show deadlines
                     notificationList.setVisibility(View.GONE);
                     deadlineList.setVisibility(View.VISIBLE);
+                    tvNoNotifications.setVisibility(View.GONE);
                 }
             }
 
@@ -122,65 +153,131 @@ public class CourseDetailActivity extends AppCompatActivity {
         deadlineList.setVisibility(View.GONE);
     }
 
-    private void loadDeadlines() {
-        Log.d("CourseDetailActivity", "Loading deadlines for studentId: " + studentId + ", courseId: " + courseId);
-        
+    private void loadAllData() {
+        // Show loading dialog
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Đang tải dữ liệu...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        // Get token and validate
+        SharedPreferences prefs = getSharedPreferences("APP_PREF", MODE_PRIVATE);
+        String token = prefs.getString("TOKEN", "");
+        if (token.isEmpty()) {
+            progressDialog.dismiss();
+            Toast.makeText(this, "Vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Reset completion flags
+        notificationLoaded = false;
+        deadlineLoaded = false;
+
+        // Load notifications
         RetrofitClient.getInstance()
-                .getDeadlineApi()
-                .getDeadlines(studentId, courseId)
-                .enqueue(new Callback<DeadlineResponse>() {
-                    @Override
-                    public void onResponse(Call<DeadlineResponse> call, Response<DeadlineResponse> response) {
-                        Log.d("CourseDetailActivity", "Response code: " + response.code());
-                        
-                        if (response.isSuccessful() && response.body() != null) {
-                            DeadlineResponse deadlineResponse = response.body();
-                            Log.d("CourseDetailActivity", "Response status: " + deadlineResponse.getStatus());
+            .getNotificationApi()
+            .getCourseNotifications("Bearer " + token, courseId)
+            .enqueue(new Callback<NotificationResponse>() {
+                @Override
+                public void onResponse(Call<NotificationResponse> call, Response<NotificationResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        NotificationResponse data = response.body();
+                        if (data.isSuccess()) {
+                            notifications.clear();
+                            notifications.addAll(data.getNotifications());
+                            notificationAdapter.notifyDataSetChanged();
                             
-                            if ("success".equals(deadlineResponse.getStatus())) {
-                                List<DeadlineItem> deadlines = deadlineResponse.getData();
-                                Log.d("CourseDetailActivity", "Number of deadlines received: " + (deadlines != null ? deadlines.size() : 0));
-                                
-                                if (deadlines != null && !deadlines.isEmpty()) {
-                                    for (DeadlineItem deadline : deadlines) {
-                                        Log.d("CourseDetailActivity", "Deadline: " +
-                                            "ID=" + deadline.getId() + 
-                                            ", Title=" + deadline.getTitle() + 
-                                            ", Status=" + deadline.getStatus() +
-                                            ", DueDate=" + deadline.getDueDate());
-                                    }
-                                    
-                                    CourseDeadlineAdapter adapter = new CourseDeadlineAdapter(CourseDetailActivity.this, deadlines);
-                                    deadlineList.setAdapter(adapter);
-                                    Log.d("CourseDetailActivity", "Adapter set with " + deadlines.size() + " items");
-                                } else {
-                                    Log.d("CourseDetailActivity", "No deadlines found in response");
-                                    Toast.makeText(CourseDetailActivity.this, "Không có deadline nào", Toast.LENGTH_SHORT).show();
-                                }
+                            // Log để debug
+                            Log.d(TAG, "Loaded " + notifications.size() + " notifications");
+                            for (Notification notification : notifications) {
+                                Log.d(TAG, "Notification: " + notification.getTitle());
+                            }
+                            
+                            if (notifications.isEmpty()) {
+                                tvNoNotifications.setVisibility(View.VISIBLE);
+                                notificationList.setVisibility(View.GONE);
                             } else {
-                                Log.e("CourseDetailActivity", "API returned error status: " + deadlineResponse.getStatus());
-                                Toast.makeText(CourseDetailActivity.this, "Lỗi: " + deadlineResponse.getStatus(), Toast.LENGTH_SHORT).show();
+                                tvNoNotifications.setVisibility(View.GONE);
+                                notificationList.setVisibility(View.VISIBLE);
                             }
                         } else {
-                            String errorBody = "";
-                            try {
-                                if (response.errorBody() != null) {
-                                    errorBody = response.errorBody().string();
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            Log.e("CourseDetailActivity", "Error response: " + errorBody);
-                            Toast.makeText(CourseDetailActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
+                            handleError(data.getMessage());
                         }
+                    } else {
+                        handleError("Không thể tải thông báo");
                     }
+                    notificationLoaded = true;
+                    checkAllDataLoaded(progressDialog);
+                }
 
-                    @Override
-                    public void onFailure(Call<DeadlineResponse> call, Throwable t) {
-                        Log.e("CourseDetailActivity", "API call failed: " + t.getMessage(), t);
-                        Toast.makeText(CourseDetailActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                @Override
+                public void onFailure(Call<NotificationResponse> call, Throwable t) {
+                    Log.e(TAG, "Failed to load notifications", t);
+                    handleError("Lỗi kết nối: " + t.getMessage());
+                    notificationLoaded = true;
+                    checkAllDataLoaded(progressDialog);
+                }
+            });
+
+        // Load deadlines
+        RetrofitClient.getInstance()
+            .getDeadlineApi()
+            .getDeadlines(studentId, courseId)
+            .enqueue(new Callback<DeadlineResponse>() {
+                @Override
+                public void onResponse(Call<DeadlineResponse> call, Response<DeadlineResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        DeadlineResponse data = response.body();
+                        if ("success".equals(data.getStatus())) {
+                            deadlineAdapter.clear();
+                            deadlineAdapter.addAll(data.getData());
+                            deadlineAdapter.notifyDataSetChanged();
+                        } else {
+                            handleError("Không thể tải deadline: " + data.getStatus());
+                        }
+                    } else {
+                        handleError("Không thể tải deadline");
                     }
-                });
+                    deadlineLoaded = true;
+                    checkAllDataLoaded(progressDialog);
+                }
+
+                @Override
+                public void onFailure(Call<DeadlineResponse> call, Throwable t) {
+                    handleError("Lỗi kết nối: " + t.getMessage());
+                    deadlineLoaded = true;
+                    checkAllDataLoaded(progressDialog);
+                }
+            });
+    }
+
+    private void checkAllDataLoaded(ProgressDialog progressDialog) {
+        if (notificationLoaded && deadlineLoaded) {
+            progressDialog.dismiss();
+            updateUI();
+        }
+    }
+
+    private void updateUI() {
+        if (tabLayout.getSelectedTabPosition() == 0) {
+            // Show notifications
+            notificationList.setVisibility(View.VISIBLE);
+            deadlineList.setVisibility(View.GONE);
+            if (notifications.isEmpty()) {
+                tvNoNotifications.setVisibility(View.VISIBLE);
+            } else {
+                tvNoNotifications.setVisibility(View.GONE);
+            }
+        } else {
+            // Show deadlines
+            notificationList.setVisibility(View.GONE);
+            deadlineList.setVisibility(View.VISIBLE);
+            tvNoNotifications.setVisibility(View.GONE);
+        }
+    }
+
+    private void handleError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void setupBottomBarNavigation() {

@@ -68,7 +68,7 @@ public class AttendanceActivity extends AppCompatActivity {
     private void loadAttendanceData() {
         RetrofitClient.getInstance()
                 .getAttendanceApi()
-                .getAttendance(studentId)
+                .getStudentAttendance(studentId)
                 .enqueue(new Callback<AttendanceResponse>() {
                     @Override
                     public void onResponse(Call<AttendanceResponse> call, Response<AttendanceResponse> response) {

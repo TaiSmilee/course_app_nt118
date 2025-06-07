@@ -14,16 +14,34 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvNotificationTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:id="@+id/tvType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/design_default_color_primary"
+                android:background="@drawable/bg_notification_type"
+                android:padding="4dp"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tvNotificationDescription"
+            android:id="@+id/tvContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -31,23 +49,12 @@
             android:textColor="@android:color/darker_gray"/>
 
         <TextView
-            android:id="@+id/tvNotificationDeadline"
+            android:id="@+id/tvDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            android:textColor="@color/design_default_color_error"
-            android:visibility="gone"/>
-
-        <Button
-            android:id="@+id/btnSubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="end"
-            android:text="Nộp bài"
-            android:visibility="gone"
-            style="@style/Widget.MaterialComponents.Button"/>
+            android:textSize="12sp"
+            android:textColor="@android:color/darker_gray"/>
 
     </LinearLayout>
 

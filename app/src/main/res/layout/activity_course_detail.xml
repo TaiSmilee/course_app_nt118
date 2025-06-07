@@ -66,20 +66,21 @@
         app:tabGravity="fill"/>
 
     <!-- Content Container -->
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <!-- Notifications List -->
         <ListView
             android:id="@+id/notificationList"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="0.5dp"
-            android:padding="8dp" />
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="8dp"
+            android:padding="8dp"
+            android:clipToPadding="false" />
 
         <TextView
             android:id="@+id/tvNoNotifications"
@@ -102,7 +103,7 @@
             android:clipToPadding="false"
             android:visibility="gone"/>
 
-    </FrameLayout>
+    </LinearLayout>
 
     <!-- Bottom Navigation Bar -->
     <include

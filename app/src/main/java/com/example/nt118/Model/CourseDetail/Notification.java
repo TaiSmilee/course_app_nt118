@@ -6,13 +6,10 @@ public class Notification {
     private int id;
     private String title;
     private String content;
-    private String description;
     private String createdAt;
-    private boolean isRead;
-    private Date deadline;
+    private String courseId;
     private String type;
-    private boolean hasSubmission;
-    private String submissionId;
+    private boolean read;
 
     // Getters and Setters
     public int getId() {
@@ -39,14 +36,6 @@ public class Notification {
         this.content = content;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getCreatedAt() {
         return createdAt;
     }
@@ -55,20 +44,12 @@ public class Notification {
         this.createdAt = createdAt;
     }
 
-    public boolean isRead() {
-        return isRead;
+    public String getCourseId() {
+        return courseId;
     }
 
-    public void setRead(boolean read) {
-        isRead = read;
-    }
-
-    public Date getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
 
     public String getType() {
@@ -79,19 +60,11 @@ public class Notification {
         this.type = type;
     }
 
-    public boolean isHasSubmission() {
-        return hasSubmission;
+    public boolean isRead() {
+        return read;
     }
 
-    public void setHasSubmission(boolean hasSubmission) {
-        this.hasSubmission = hasSubmission;
-    }
-
-    public String getSubmissionId() {
-        return submissionId;
-    }
-
-    public void setSubmissionId(String submissionId) {
-        this.submissionId = submissionId;
+    public void setRead(boolean read) {
+        this.read = read;
     }
 } 

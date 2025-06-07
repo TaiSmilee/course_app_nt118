@@ -24,7 +24,12 @@
             android:name=".UI.Tuition.TuitionActivity"
             android:exported="false" /> <!-- Các activity khác của bạn -->
         <activity android:name=".UI.CourseListActivity" />
-        <activity android:name=".UI.CourseDetailActivity" />
+        <activity
+            android:name=".UI.CourseDetail.CourseDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.CourseDetailActivity"
+            android:exported="false" />
         <activity android:name=".UI.StudentListActivity" />
         <activity android:name=".UI.ProfileActivity" />
         <activity android:name=".UI.grades.GradeActivity" />
@@ -50,6 +55,9 @@
             android:exported="false" />
         <activity
             android:name=".UI.submission.SubmissionDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.Attendance.AttendanceDetailActivity"
             android:exported="false" />
     </application>
 

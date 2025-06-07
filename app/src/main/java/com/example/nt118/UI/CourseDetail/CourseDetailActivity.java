@@ -168,11 +168,11 @@ public class CourseDetailActivity extends AppCompatActivity {
             .getCourseNotifications("Bearer " + token, courseId);
             
         // Comment out deadline API call temporarily
-        /*
+        
         Call<DeadlineResponse> deadlineCall = RetrofitClient.getInstance()
             .getDeadlineApi()
             .getDeadlines(prefs.getString("STUDENT_ID", ""), courseId);
-        */
+        
 
         // Execute API calls in parallel
         courseCall.enqueue(new Callback<CourseDetailResponse>() {
@@ -240,7 +240,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         });
 
         // Comment out deadline API call temporarily
-        /*
+    
         deadlineCall.enqueue(new Callback<DeadlineResponse>() {
             @Override
             public void onResponse(Call<DeadlineResponse> call, Response<DeadlineResponse> response) {
@@ -267,7 +267,7 @@ public class CourseDetailActivity extends AppCompatActivity {
                 checkAllDataLoaded(progressDialog);
             }
         });
-        */
+        
     }
 
     private void checkAllDataLoaded(ProgressDialog progressDialog) {
